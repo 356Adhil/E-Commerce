@@ -9,7 +9,7 @@ router.get("/signup", userSignup.getSignup);
 router.get("/login", userLogin.getLogin);
 router.get("/contact", userLogin.getContact);
 router.get("/home", userLogin.getHome);
-router.get("/otp",userSignup.getOtp)
+router.get("/otp", userSignup.getOtp);
 
 router.post("/", userSignup.postSignup);
 router.post("/home", userLogin.postHome);

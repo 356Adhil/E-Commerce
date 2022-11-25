@@ -33,7 +33,7 @@ module.exports = {
         if (result) {
           req.session.loggedIn = true;
           req.session.email = req.body.email;
-          console.log('its here');
+          console.log("its here");
           res.redirect("/login");
           console.log(req.session.email);
         } else {

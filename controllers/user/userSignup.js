@@ -53,18 +53,6 @@ module.exports = {
         }
       });
     }
-
-    // try {
-    //   const user = await User.create({
-    //     username: username,
-    //     email: email,
-    //     mobile: mobile,
-    //     password: password,
-    //   });
-    //   res.redirect("/otp");
-    // } catch (error) {
-    //   console.log(error);
-    // }
   },
 
   getOtp: (req, res) => {
