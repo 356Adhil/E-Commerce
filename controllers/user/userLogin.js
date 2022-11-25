@@ -1,4 +1,5 @@
 const { response } = require("express");
+const User = require("../../models/signUp");
 
 module.exports = {
   getLanding: (req, res) => {
@@ -9,19 +10,43 @@ module.exports = {
     res.render("user/category");
   },
 
-  getSample: (req,res)=>{
-    res.render("user/Sample")
+  getLogin: (req, res) => {
+    if (req.session.email) {
+      res.redirect("/home");
+    } else {
+      res.render("user/login");
+    }
   },
 
-    getLogin: (req, res) => {
-    res.render("user/login");
-  },
-  
-  postHome: (req,res)=>{
-    res.render("user/LandingIndex")
+  getHome: (req, res) => {
+    if (req.session.email) {
+      res.render("user/home");
+    } else {
+      res.redirect("/login");
+    }
   },
 
-  getContact:(req,res)=>{
-    res.render("user/contact")
-  }
+  postHome: (req, res) => {
+    const { email, password } = req.body;
+    User.findOne({ email: email, password: password })
+      .then((result) => {
+        if (result) {
+          req.session.loggedIn = true;
+          req.session.email = req.body.email;
+          console.log('its here');
+          res.redirect("/login");
+          console.log(req.session.email);
+        } else {
+          res.redirect("/home");
+          console.log("invalid Entry");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
+
+  getContact: (req, res) => {
+    res.render("user/contact");
+  },
 };

@@ -6,9 +6,12 @@ const userLogin = require("../../controllers/user/userLogin");
 router.get("/", userLogin.getLanding);
 router.get("/category", userLogin.getCategory);
 router.get("/signup", userSignup.getSignup);
-router.get("/login",userLogin.getLogin)
-router.get("/contact",userLogin.getContact)
+router.get("/login", userLogin.getLogin);
+router.get("/contact", userLogin.getContact);
+router.get("/home", userLogin.getHome);
+router.get("/otp",userSignup.getOtp)
 
-router.post("/",userSignup.postSignup)
-router.post("/home",userLogin.postHome)
+router.post("/", userSignup.postSignup);
+router.post("/home", userLogin.postHome);
+
 module.exports = router;
