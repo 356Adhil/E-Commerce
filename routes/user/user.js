@@ -13,5 +13,6 @@ router.get("/otp", userSignup.getOtp);
 
 router.post("/", userSignup.postSignup);
 router.post("/home", userLogin.postHome);
+router.post("/otp",userSignup.postOtp)
 
 module.exports = router;

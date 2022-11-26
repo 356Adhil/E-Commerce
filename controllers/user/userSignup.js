@@ -1,6 +1,10 @@
 const { response } = require("express");
 const User = require("../../models/signUp");
 const nodemailer = require("nodemailer");
+let username;
+let email;
+let mobile;
+let password;
 
 let mailTransporter = nodemailer.createTransport({
   service: "gmail",
@@ -17,10 +21,10 @@ module.exports = {
   },
 
   postSignup: async (req, res) => {
-    let username = req.body.username;
-    let email = req.body.email;
-    let mobile = req.body.phone;
-    let password = req.body.password;
+    username = req.body.username;
+    email = req.body.email;
+    mobile = req.body.phone;
+    password = req.body.password;
 
     let mailDetails = {
       from: "356adhil@gmail.com",
@@ -33,17 +37,6 @@ module.exports = {
     if (user) {
       res.redirect("/signup");
     } else {
-      try {
-        const user = await User.create({
-          username: username,
-          email: email,
-          mobile: mobile,
-          password: password,
-        });
-      } catch (error) {
-        console.log(error);
-      }
-
       mailTransporter.sendMail(mailDetails, function (err, data) {
         if (err) {
           console.log("Error Occurs");
@@ -66,6 +59,18 @@ module.exports = {
   postOtp: async (req, res) => {
     let { otp } = req.body;
     if (OTP === otp) {
+      try {
+        const user = await User.create({
+          username: username,
+          email: email,
+          mobile: mobile,
+          password: password,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+
+      console.log("its here post otp");
       res.redirect("/login");
     } else {
       res.redirect("/otp");
