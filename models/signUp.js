@@ -15,9 +15,7 @@ const signupSchema = new Schema({
   username: {
     type: String,
     require: true,
-    unique: true,
-    validate: [validateName, "please fill a valid name"],
-    match: [/^[a-zA-Z]+$/, "please fill a valid name"],
+    match: [/^[a-zA-Z]+$/, "please fill a valid name"]
   },
   email: {
     type: String,

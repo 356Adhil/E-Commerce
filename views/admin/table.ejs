@@ -1,0 +1,46 @@
+    <div class="container-fluid position-relative d-flex p-0">
+        <div class="content">
+            <!-- Recent Sales Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-secondary text-center rounded p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h2 class="mb-0">Users</h2>
+
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table text-start align-middle table-hover mb-0" id="example">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Username</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Mobile</th>
+                                    <th scope="col">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% users.forEach(usersData=>{ %>
+                                    <tr>
+
+                                        <td>
+                                            <%= usersData.username %>
+                                        </td>
+                                        <td>
+                                            <%= usersData.email %>
+                                        </td>
+                                        <td>
+                                            <%= usersData.mobile %>
+                                        </td>
+                                    </tr>
+                                    <%})%>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+            </div>
+            <!-- Recent Sales End -->
+
+        </div>
+    </div>
+    <%- include("../includes/adminSidebar") %>

@@ -7,10 +7,12 @@ const bodyParser = require("body-parser");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 
-const expressLayouts = require("express-ejs-layouts");
+// const expressLayouts = require("express-ejs-layouts");
 // const path = require("path");
+
+// setting Routers
 const userRouter = require("./routes/user/user");
-// need declare admin router
+const adminRouter = require("./routes/admin/admin");
 
 // Connection to dataBase
 mongoose.connect("mongodb://localhost:27017/E-Commerce", {
@@ -18,11 +20,12 @@ mongoose.connect("mongodb://localhost:27017/E-Commerce", {
   useUnifiedTopology: true,
 });
 
+const oneDay = 1000 * 60 * 60 * 24;
 app.use(
   session({
     secret: "thisismykey",
     saveUninitialized: true,
-    cookie: { maxAge: 600000 },
+    cookie: { maxAge: oneDay },
     resave: false,
   })
 );
@@ -41,8 +44,8 @@ app.use(cookieParser());
 app.set("view engine", "ejs");
 app.set("views", "./views");
 
-app.use(expressLayouts);
-app.set("layout", "./layouts/layout");
+// app.use(expressLayouts);
+// app.set("layout", "./layouts/layout");
 
 app.use(
   bodyParser.urlencoded({
@@ -56,8 +59,7 @@ app.use(express.static("public"));
 // app.use("css", express.static(path.join(__dirname + "public/css")));
 
 // Routers
-
 app.use("/", userRouter);
-// need add admin router
+app.use("/admin", adminRouter);
 
 app.listen(port, console.log("Server running at ", port));

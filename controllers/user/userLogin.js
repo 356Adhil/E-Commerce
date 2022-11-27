@@ -1,9 +1,14 @@
 const { response } = require("express");
 const User = require("../../models/signUp");
+const bcrypt = require("bcrypt")
 
 module.exports = {
   getLanding: (req, res) => {
-    res.render("user/LandingIndex");
+    if (req.session.email) {
+      res.redirect("/home");
+    } else {
+      res.render("user/LandingIndex");
+    }
   },
 
   getCategory: (req, res) => {
@@ -26,24 +31,24 @@ module.exports = {
     }
   },
 
-  postHome: (req, res) => {
-    const { email, password } = req.body;
-    User.findOne({ email: email, password: password })
-      .then((result) => {
-        if (result) {
-          req.session.loggedIn = true;
-          req.session.email = req.body.email;
-          console.log("its here");
-          res.redirect("/login");
-          console.log(req.session.email);
-        } else {
-          res.redirect("/home");
-          console.log("invalid Entry");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  postHome: async (req, res) => {
+    const userData = req.body;
+    const user = await User.findOne({
+      email: userData.email,
+    });
+    if (user) {
+      let status = await bcrypt.compare(userData.password, user.password);
+      if (status) {
+        req.session.loggedIn = true;
+        req.session.email = req.body.email;
+        console.log("its here");
+        res.redirect("/login");
+        console.log(req.session.email);
+      } else {
+        res.redirect("/home");
+        console.log("invalid Entry");
+      }
+    }
   },
 
   getContact: (req, res) => {

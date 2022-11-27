@@ -1,6 +1,7 @@
 const { response } = require("express");
 const User = require("../../models/signUp");
 const nodemailer = require("nodemailer");
+const bcrypt = require("bcrypt")
 let username;
 let email;
 let mobile;
@@ -24,7 +25,7 @@ module.exports = {
     username = req.body.username;
     email = req.body.email;
     mobile = req.body.phone;
-    password = req.body.password;
+    password = await bcrypt.hash(req.body.password, 10);
 
     let mailDetails = {
       from: "356adhil@gmail.com",
