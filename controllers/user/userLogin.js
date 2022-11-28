@@ -23,9 +23,21 @@ module.exports = {
     }
   },
 
+  getLogout: (req, res) => {
+    req.session.destroy((err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("logout successfully");
+        res.redirect("/");
+      }
+    });
+  },
+
   getHome: (req, res) => {
     if (req.session.email) {
-      res.render("user/home");
+      let user = req.session.email
+      res.render("user/home",{user});
     } else {
       res.redirect("/login");
     }

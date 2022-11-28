@@ -1,16 +1,16 @@
 module.exports = {
-    verifyLoginAdmin: (req, res, next) => {
+    verifyAdmin: (req, res, next) => {
       if (req.session.adminId) {
         next();
       } else {
         res.redirect("/admin");
       }
     },
-    verifyLoginUser:(req,res,next)=>{
-      if(req.session.userId){
-        next();
+    verifyUser:(req,res,next)=>{
+      if(req.session.email){
+        res.redirect('/home');
       }else{
-        res.redirect('/user');
+        next();
       }
     }
     }
