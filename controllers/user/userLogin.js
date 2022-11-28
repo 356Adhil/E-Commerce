@@ -58,8 +58,11 @@ module.exports = {
         console.log(req.session.email);
       } else {
         res.redirect("/home");
-        console.log("invalid Entry");
+        console.log("invalid Entry 1st");
       }
+    }else {
+      res.redirect("/home");
+      console.log("invalid Entry 2nd");
     }
   },
 
