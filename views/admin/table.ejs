@@ -12,8 +12,7 @@
             <th class="px-4 py-3 " style="padding-left:3%;">Name</th>
             <th class="px-4 py-3" style="padding-left:8%;">Email</th>
             <th class="px-4 py-3">Phone</th>
-            <th class="px-4 py-3">Block</th>
-            <th class="px-4 py-3">Unblock</th>
+            <th class="px-4 py-3">Status</th>
 
           </tr>
         </thead>
@@ -26,22 +25,20 @@
                     <td style="padding-left:3%;"><%= usersData.email %></td>
                     <td ><%= usersData.mobile %></td>
                     <td>
-                        <button
-                        class="px-4 py-2  text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg active:bg-red-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-red"
-                      >
+                      <% if(usersData.status === true) { %>
+                      <a href="/admin/blockAction/<%=usersData._id%>">
+                        <button class="px-4 py-2  text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg active:bg-red-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-red">
                         Block
                       </button>
-
-                    </td>
-                    <td>
-                        <button
-                        class="px-4 py-2  text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-                      >
-                        UnBlock
-                      </button>
-
-                    </td>
-                       
+                    </a>
+                    <% }else{ %>
+                    <a href="/admin/unBlockAction/<%=usersData._id%>" class="btn">
+                      <button style="background-color: green;" class="px-4 py-2  text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg active:bg-red-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-red">
+                      Unblock
+                    </button>
+                  </a>
+                  <%}%>
+                    </td>     
                 </tr>
                 <%})%>
         </tbody>

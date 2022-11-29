@@ -5,7 +5,7 @@ const userLogin = require("../../controllers/user/userLogin");
 const verifyUser = require("../../middlewares/Session")
 
 router.get("/", userLogin.getLanding);
-router.get("/category", userLogin.getCategory);
+// router.get("/category", userLogin.getCategory);
 router.get("/signup",verifyUser.verifyUser, userSignup.getSignup);
 router.get("/login", userLogin.getLogin);
 router.get("/contact", userLogin.getContact);

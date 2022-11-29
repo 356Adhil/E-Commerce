@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const adminLogin = require("../controllers/admin/adminLogin");
 const Schema = mongoose.Schema;
 
 var validateEmail = function (email) {

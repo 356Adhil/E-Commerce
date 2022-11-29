@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const userSignup = require("../controllers/user/userSignup");
 const Schema = mongoose.Schema;
 
 var validateEmail = function (email) {
@@ -36,6 +35,10 @@ const signupSchema = new Schema({
     type: String,
     required: true,
   },
+  status :{
+    type: Boolean,
+    default : true
+  }
 });
 
 const User = mongoose.model("users", signupSchema);
