@@ -30,8 +30,8 @@ module.exports = {
     let mailDetails = {
       from: "356adhil@gmail.com",
       to: email,
-      subject: "KARMA ACCOUNT REGISTRATION",
-      html: `<p>YOUR OTP FOR REGISTERING IN KARMA IS ${OTP}</p>`,
+      subject: "RIGHT FIT ACCOUNT REGISTRATION",
+      html: `<p>YOUR OTP FOR REGISTERING IN <h4>RIGHT FIT</h4> IS <h1>${OTP}</h1></p>`,
     };
 
     const user = await User.findOne({ email: email });
@@ -70,7 +70,6 @@ module.exports = {
       } catch (error) {
         console.log(error);
       }
-
       console.log("its here post otp");
       res.redirect("/login");
     } else {

@@ -14,6 +14,14 @@
 </head>
 
 <body>
+    <div class="container">
+    <a href="/admin/Product">
+        <button style="background-color: rgb(175, 93, 0);" 
+        class=" px-4 py-2 mt-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg active:bg-red-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-red">
+        Back
+      </button>
+    </a>
+</div>
     <!-- Section: Design Block -->
     <section class="text-center text-lg-start">
         <style>
@@ -37,7 +45,7 @@
               ">
                         <div class="card-body p-5 shadow-5 text-center">
                             <h2 class="fw-bold mb-5">Add New Product</h2>
-                            <form action="/admin/addProduct" method="post">
+                            <form action="/admin/addProduct" method="post" enctype="multipart/form-data">
                                 <!-- 2 column grid layout with text inputs for the first and last names -->
                                 <div class="row">
                                     <div class="col-md-6 mb-4">
@@ -78,8 +86,19 @@
 
 
                                 <div class="form-outline mb-4">
-                                    <input type="text" id="form3Example3" name="category" class="form-control" />
+                                                                    
+                               <select name="category" id="">
+                                <%for(let i=0;i<getAddCategory.length;i++){%>
+                                <option><%=getAddCategory[i].name%></option>
+                                <%}%>
+                               </select>
                                     <label class="form-label" for="form3Example3">Category</label><br />
+                                    <span id="emailError" style="color: red"></span>
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <input type="file" id="form3Example3" name="myFiles" class="form-control" />
+                                    <label class="form-label" for="form3Example3">image</label><br />
                                     <span id="emailError" style="color: red"></span>
                                 </div>
 
@@ -98,6 +117,7 @@
                     </div>
                 </div>
             </div>
+        </div>
         </div>
         <!-- Jumbotron -->
     </section>

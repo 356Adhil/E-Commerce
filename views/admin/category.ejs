@@ -1,0 +1,62 @@
+<!-- ////////////////////////////////////////// -->
+
+<%- include("../includes/adminheader.ejs") %>
+
+  <!-- New Table -->
+  <div class="w-full overflow-hidden rounded-lg shadow-xs">
+    <div class="w-full pl-3 overflow-x-auto">
+      <table class="w-full whitespace-no-wrap" style="color:white ;">
+        <thead>
+          <tr
+            class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+            <th class="px-4 py-3" style="padding-left:3%;">Category</th>
+            <th class="px-4 py-3" style="padding-left:3%;">Edit</th>
+            <th class="px-4 py-3" style="padding-left:3%;">Delete</th>
+
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+          <% category.forEach(categoryData=>{ %>
+            <tr>
+
+              <td style="padding-left:3.5%;">
+                <%= categoryData.name %>
+              </td>
+
+              <td style="padding-left:1%;">
+                <a href="/admin/editCategory/<%=categoryData._id%>">
+                  <button style="background-color: green;"
+                    class="px-4 py-2  text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg active:bg-red-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-red">
+                    Edit
+                  </button>
+                </a>
+              </td>
+              <td style="padding-left:1%;">
+                <a href="/admin/deleteCategory/<%=categoryData._id%>" onclick="return confirm('CLICK OK TO DELETE')">
+                  <button style="background-color: red;"
+                    class="px-4 py-2  text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg active:bg-red-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-red">
+                    Delete
+                  </button>
+                </a>
+              </td>
+            </tr>
+            <%})%>
+        </tbody>
+      </table>
+      <div class="container mt-4" style="
+      display: flex;
+      align-content: center;
+      justify-content: space-around;
+      align-items: center;">
+        <a href="/admin/addCategory">
+          <button style="background-color: rgb(0, 175, 0); width: 300px;" 
+            class=" px-4 py-2 mt-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-red-600 border border-transparent rounded-lg active:bg-red-600 hover:bg-red-700 focus:outline-none focus:shadow-outline-red">
+            Add New
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+  </body>
+
+  </html>

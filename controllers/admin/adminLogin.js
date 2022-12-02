@@ -58,4 +58,8 @@ module.exports = {
     const productData = await product.find();
     res.render("admin/products", { product: productData });
   },
+
+  getLogout:(req,res)=>{
+    res.redirect("/admin")
+  }
 };
