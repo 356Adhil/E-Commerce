@@ -15,6 +15,7 @@
             <th class="px-4 py-3">size</th>
             <th class="px-4 py-3">Description</th>
             <th class="px-4 py-3">Stock</th>
+            <th class="px-4 py-3">image</th>
             <th class="px-4 py-3">Edit</th>
             <th class="px-4 py-3">Delete</th>
 
@@ -40,6 +41,9 @@
               </td>
               <td style="padding-left:1.5%;">
                 <%= productData.qty %>
+              </td>
+              <td style="padding-left:1.5%;">
+                <img style="width: 60px;" src="/uploads/<%=productData.imageUrl%>" alt="">
               </td>
               <td style="padding-left:1%;">
                 <a href="/admin/editProduct/<%=productData._id%>">

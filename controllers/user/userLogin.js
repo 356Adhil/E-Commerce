@@ -1,6 +1,9 @@
 const { response } = require("express");
 const User = require("../../models/signUp");
 const bcrypt = require("bcrypt");
+const product = require("../../models/product");
+const category = require("../../models/category");
+
 let msg = "";
 
 module.exports = {
@@ -12,9 +15,12 @@ module.exports = {
     }
   },
 
-  // getCategory: (req, res) => {
-  //   res.render("user/category");
-  // },
+  getShop: async(req, res) => {
+    let user = req.session.email;
+    const productData = await product.find();
+    const categoryData = await category.find();
+    res.render("user/shop",{user, product: productData, category: categoryData  });
+  },
 
   getLogin: (req, res) => {
     if (req.session.email) {
@@ -35,10 +41,11 @@ module.exports = {
     });
   },
 
-  getHome: (req, res) => {
+  getHome:async (req, res) => {
     if (req.session.email) {
       let user = req.session.email;
-      res.render("user/home", { user });
+      const productData = await product.find();
+      res.render("user/home", { user, product: productData });
     } else {
       res.redirect("/login");
     }
@@ -76,5 +83,12 @@ module.exports = {
 
   getContact: (req, res) => {
     res.render("user/contact");
+  },
+
+  getProductDetails: async(req, res) => {
+    let user = req.session.email;
+    const productData = await product.find();
+    const categoryData = await category.find();
+    res.render("user/productDetails",{user, product: productData, category: categoryData  });
   },
 };

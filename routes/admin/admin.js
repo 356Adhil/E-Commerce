@@ -6,7 +6,7 @@ const editProduct = require("../../controllers/admin/editProduct")
 const deleteProduct = require("../../controllers/admin/deleteProduct")
 const category = require("../../controllers/admin/category")
 const upload = require("../../middlewares/multer")
-
+const banner = require("../../controllers/admin/banner")
 
 router.get("/", adminLogin.getAdmin);
 router.post("/", adminLogin.postAdmin);
@@ -21,6 +21,9 @@ router.get("/logout", adminLogin.getLogout);
 router.get("/editProduct/:id",editProduct.getEditProduct)
 router.post("/editProduct/:id",editProduct.postEditProduct)
 router.get("/deleteProduct/:id",deleteProduct.deleteProduct)
+router.get("/banner",banner.getBanner)
+router.get("/addBanner",banner.getAddBanner)
+router.post("/addBanner",upload.single('img'),banner.postAddBanner)
 
 /* ---------------------category-------------------------------------- */
 router.get('/category',category.getCategory)
