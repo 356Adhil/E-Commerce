@@ -43,7 +43,7 @@
                 <%= productData.qty %>
               </td>
               <td style="padding-left:1.5%;">
-                <img style="width: 60px;" src="/uploads/<%=productData.imageUrl%>" alt="">
+                <img style="width: 60px;" src="<%=productData.imageUrl[0].url%>" alt="">
               </td>
               <td style="padding-left:1%;">
                 <a href="/admin/editProduct/<%=productData._id%>">

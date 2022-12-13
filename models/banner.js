@@ -1,6 +1,10 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const imageSchema = new mongoose.Schema({
+    url: String,
+    filename: String
+  })
 
 const bannerSchema = new Schema({
     head: {
@@ -15,10 +19,10 @@ const bannerSchema = new Schema({
         type: String,
         required: true
     },
-    bannerImage: {
-        type: String,
-        required: true,
-      },
+    bannerImage: [{
+        url: String,
+        filename: String,
+      }],
 });
 
 const banner = mongoose.model("banners", bannerSchema);

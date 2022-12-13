@@ -14,14 +14,14 @@ module.exports = {
     const head = req.body.head;
     const subHead = req.body.subHead;
     const description = req.body.descriptions;
-    const image = req.file.filename;
     try {
-        const banners = await banner.create({
+        const banners = new banner({
             head: head,
             subHead: subHead,
             description: description,
-            bannerImage: image,
         })
+        banners.bannerImage = req.files.map((f)=>({url:f.path, filename:f.filename}))
+        const banneritem = await banners.save();
         res.redirect("/admin/banner")
     } catch (error) {
         console.log(error);

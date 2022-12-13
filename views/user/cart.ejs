@@ -40,7 +40,7 @@
                                 <td>
                                     <div class="media">
                                         <div class="d-flex">
-                                            <img class="w-50" src="/uploads/<%=getProducts[i].productData.imageUrl%>" alt="">
+                                            <img class="w-50" src="<%=getProducts[i].productData.imageUrl[0].url%>" alt="">
                                         </div>
                                         <div class="media-body">
                                             <p><%= getProducts[i].productData.title %></p>
@@ -60,7 +60,7 @@
                                         <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
                                             class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
                                         </a>
-                                        <% if (getProducts[i].productquantity > 1) { %>    
+                                        <% if (getProducts[i].quantity > 1) { %>   
 
                                         <a onclick="changeQuantity('<%= getProducts[i]._id %>','<%= getProducts[i].productData._id %>',-1)" id="<%= getProducts[i].productData._id %>">
                                             <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) & sst > 0 ) result.value--;return false;"

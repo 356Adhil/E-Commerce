@@ -23,7 +23,7 @@
             </div>
             <div class="col-lg-7">
               <div class="banner-img">
-                <img class="img-fluid mt-5 pt-5 w-50" src="/uploads/<%=bannerData.bannerImage%>" alt="" />
+                <img class="img-fluid mt-5 pt-5" src="<%=bannerData.bannerImage[0].url%>" alt="" />
               </div>
             </div>
             <%})%>
@@ -107,13 +107,12 @@
         <div class="col-lg-3 col-md-6">
           <div class="single-product">
             <a href="/productDetails?id=<%= productData.id %>">
-            <img class="img-fluid" style="width:71%;" src="/uploads/<%=productData.imageUrl%>" alt="" />
+            <img class="img-fluid" style="width:71%;" src="<%=productData.imageUrl[0].url%>" alt="" />
           </a>
             <div class="product-details">
               <h6><%=productData.title%></h6>
               <div class="price">
-                <h6>$<%=productData.price%></h6>
-                <h6 class="l-through">$210.00</h6>
+                <h6>₹ <%=productData.price%></h6>
               </div>
               <div class="prd-bottom">
                 <a onclick="ajaxCart('<%= productData.id %>')" class="social-info">

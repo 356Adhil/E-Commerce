@@ -125,7 +125,14 @@ module.exports = {
       const id = req.query.id
       let user = req.session.email;
       const productData = await product.find({_id:id})
-      res.render("user/productDetails",{allProducts, productData, user})
+      console.log("product data",productData);
+      let cartCount = 0;
+      let Cart = await cart.findOne({user_Id:ObjectId(req.session.userId)})
+      console.log("Cart Exist"+Cart);
+      if(Cart){
+        cartCount = Cart.products.length
+      }
+      res.render("user/productDetails",{allProducts, productData, user, cartCount})
     } catch (error) {
       console.log(error.message);
     }

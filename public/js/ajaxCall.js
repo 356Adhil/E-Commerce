@@ -33,6 +33,13 @@ function ajaxDeleteProduct(ID){
     })
 
 }
+function change_image(image){
+let container = document.getElementById("main-image");
+container.src = image.src;
+}
+document.addEventListener("DOMContentLoaded", function(event) {
+});
+
 
 function changeQuantity(cartId,proId,count){
     console.log("helloo bviyakk");

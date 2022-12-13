@@ -31,7 +31,7 @@
                 <%= bannerData.description %>
               </td>
               <td style="padding-left:1.5%;">
-                <img style="width: 60px;" src="/uploads/<%=bannerData.bannerImage%>" alt="">
+                <img style="width: 60px;" src="<%=bannerData.bannerImage[0].url%>" alt="">
               </td>
               <td style="padding-left:1%;">
                 <a href="/admin/editBanner/<%=bannerData._id%>">
