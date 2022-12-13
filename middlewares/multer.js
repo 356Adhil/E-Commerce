@@ -12,4 +12,4 @@ const storage=multer.diskStorage({
 
 }
 ) 
-module.exports=multer({storage:storage})/* middle ware to run multer and here we storage the storage */
+module.exports=multer({storage:storage})/* middleware to run multer and here we storage the storage */

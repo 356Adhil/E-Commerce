@@ -9,6 +9,7 @@ const bannerSchema = new Schema({
     },
     subHead: {
         type: String,
+        required: true
     },
     description: {
         type: String,

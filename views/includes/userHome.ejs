@@ -77,13 +77,16 @@
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li class="nav-item">
-                                <a href="#" class="cart"><span class="ti-bag"></span></a>
+                                <a href="/cart" class="cart"><span class="ti-bag"></span>
+                                    <span class="badge badge-light " id="count"><%= cartCount %></span>
+                                </a>
                             </li>
+                            
                             <li class="nav-item">
                                 <button class="search">
-                                    <a href="#" class="Wishlist
+                                    <a href="/wishlist" class="Wishlist
                                     ">
-                                    <span class="lnr lnr-heart"></span></a>
+                                        <span class="lnr lnr-heart"></span></a>
                                 </button>
                             </li>
                         </ul>
@@ -119,6 +122,11 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
     <script src="js/gmaps.min.js"></script>
     <script src="js/main.js"></script>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="/js/ajaxCall.js"></script>
+
 </body>
 
 </html>

@@ -5,19 +5,31 @@ const product = require("../../models/product");
 
 module.exports = {
   getAdmin: (req, res) => {
+    if(req.session.adminEmail){
+      res.redirect("/admin/home")
+    }
     res.render("admin/login");
   },
 
   postAdmin: async (req, res) => {
-    let adminData = req.body;
-    const findAdmin = await admin.find({
-      email: adminData.email,
-      password: adminData.password,
-    });
-    if (findAdmin) {
-      res.redirect("/admin/home");
-    } else {
-      console.log("Something Wrong");
+    try {
+      let adminData = req.body;
+      const findAdmin = await admin.find({
+        email: adminData.email,
+        password: adminData.password,
+      });
+      if (findAdmin) {
+        const adminId = await admin.findOne({email: adminData.email})
+        req.session.adminLoggedIn = true;
+        req.session.adminId = adminId._id;
+        req.session.adminEmail = req.body.email;
+        res.redirect("/admin/home");
+      } else {
+        res.redirect("/admin/login")
+        console.log("Something Wrong");
+      }
+    } catch (error) {
+      console.log(error);
     }
   },
 
@@ -60,6 +72,13 @@ module.exports = {
   },
 
   getLogout:(req,res)=>{
-    res.redirect("/admin")
+    req.session.destroy((err)=>{
+      if(err){
+        console.log(err);
+      }else{
+        console.log("Admin Logout Successfull");
+        res.redirect("/admin")
+      }
+    })
   }
 };

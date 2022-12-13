@@ -24,7 +24,7 @@ module.exports = {
       const id = req.params.id;
       console.log(id);
       const productData = await product.updateOne(
-        { id },
+        {_id: id },
         {
           $set: {
             title: req.body.title,
@@ -32,11 +32,12 @@ module.exports = {
             price: req.body.price,
             qty: req.body.qty,
             category: req.body.category,
-            imageUrl: req.body.myFiles,
+            imageUrl: req.body.image,
             description: req.body.description,
           },
         }
       );
+      console.log(productData);
       res.redirect("/admin/product");
     } catch (error) {
       console.log(error.message);

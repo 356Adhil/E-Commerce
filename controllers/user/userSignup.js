@@ -10,8 +10,10 @@ let password;
 let mailTransporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "356adhil@gmail.com",
-    pass: "ilbjysyucyhiltbf",
+    // user: "356adhil@gmail.com",
+    user: "officialrightfit@gmail.com",
+    // pass: "ilbjysyucyhiltbf",
+    pass: "qzmdlyemyjxczjia",
   },
 });
 const OTP = `${Math.floor(1000 + Math.random() * 9000)}`;
@@ -28,10 +30,10 @@ module.exports = {
     password = await bcrypt.hash(req.body.password, 10);
 
     let mailDetails = {
-      from: "356adhil@gmail.com",
+      from: "officialrightfit@gmail.com",
       to: email,
       subject: "RIGHT FIT ACCOUNT REGISTRATION",
-      html: `<p>YOUR OTP FOR REGISTERING IN <h4>RIGHT FIT</h4> IS <h1>${OTP}</h1></p>`,
+      html: `<p>YOUR OTP FOR REGISTERING IN RIGHT FIT IS <br><h1>${OTP}</h1></p>`,
     };
 
     const user = await User.findOne({ email: email });
