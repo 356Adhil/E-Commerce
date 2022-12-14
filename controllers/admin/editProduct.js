@@ -22,9 +22,8 @@ module.exports = {
   postEditProduct: async (req, res) => {
     try {
       const id = req.params.id;
-      console.log(id);
       const editImage = req.files.map((f)=>({url:f.path, filename:f.filename}))
-      const imageProduct = await product.updateOne({ imageUrl: editImage },{ _id: id })
+      const imageProduct = await product.updateOne({ _id: id },{$set:{ imageUrl: editImage }})
       const productData = await product.updateOne(
         {_id: id },
         {
@@ -38,7 +37,6 @@ module.exports = {
           },
         }
       );
-      console.log(productData);
       
       res.redirect("/admin/product");
     } catch (error) {

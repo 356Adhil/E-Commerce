@@ -40,9 +40,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
 });
 
 
-function changeQuantity(cartId,proId,count){
+function changeQuantity(cartId,proId,singlePrice,count){
     console.log("helloo bviyakk");
-    let quantity=parseInt(document.getElementById(proId).innerHTML)
+    let quantity=parseInt(document.getElementById('qty'+proId).value)
     $.ajax({
         url:'/changeQty',
         data:{
@@ -53,16 +53,20 @@ function changeQuantity(cartId,proId,count){
         },
         method:'post',
        success:(response)=>{
-        console.log(response)
        if(response.statusRemove==true){
         console.log("removed...............................................")
         location.reload();
+        
        }else{
-        console.log("else case")
-        document.getElementById(proId).innerHTML=count+quantity;
-        location.reload();
+        let downBtn = document.getElementById('down'+proId)
+        let quantity=parseInt(document.getElementById('qty'+proId).value)
+        if(quantity<2){
+            downBtn.classList.add('d-none')
+        }
+        else{
+            downBtn.classList.remove('d-none')}
        }
-         
+       document.getElementById('productPrice'+proId).innerHTML = (singlePrice*quantity)
     }
 })
 

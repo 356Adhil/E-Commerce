@@ -337,17 +337,7 @@ module.exports = {
       const productId = req.body.product;
       const quantity = parseInt(req.body.quantity);
       const count = parseInt(req.body.count);
-      if (count == -1 && quantity == 1) {
-        console.log("removing start....");
-        // let productPull = await cart
-        //   .updateOne(
-        //     { _id: cartId },
-        //     { $pull: { products: { product_Id: productId } } }
-        //   )
-        //   .then(() => {
-        //     res.json({ statusRemove: true });
-        //   });
-      } else {
+     
         let userProdExist = await cart.findOne({
           _id: cartId,
           products: { $elemMatch: { product_Id: productId } },
@@ -365,7 +355,7 @@ module.exports = {
             .then(() => {
               res.json({ status: true });
             });
-        }
+        
       }
     } catch (error) {
       console.log(error);
