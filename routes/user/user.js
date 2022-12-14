@@ -19,7 +19,7 @@ router.get("/cart",cart.getCart)
 router.get("/add-cart/:id",cart.getAddCart)
 // router.get("/deleteCartProduct/:id",verifyUser.verifyUserCart,cart.getDeleteCartProduct)
 router.get("/deleteCartProduct/:id",verifyUser.verifyUserCart,cart.getDeleteCartProduct)
-router.post("/changeQty",cart.changeQuantity)
+router.post("/changeQuantity",cart.changeQuantity)
 
 router.post("/", userSignup.postSignup);
 router.post("/home", userLogin.postHome);

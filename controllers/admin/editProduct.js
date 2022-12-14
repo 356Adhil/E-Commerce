@@ -23,6 +23,8 @@ module.exports = {
     try {
       const id = req.params.id;
       console.log(id);
+      const editImage = req.files.map((f)=>({url:f.path, filename:f.filename}))
+      const imageProduct = await product.updateOne({ imageUrl: editImage },{ _id: id })
       const productData = await product.updateOne(
         {_id: id },
         {
@@ -32,12 +34,12 @@ module.exports = {
             price: req.body.price,
             qty: req.body.qty,
             category: req.body.category,
-            imageUrl: req.body.image,
             description: req.body.description,
           },
         }
       );
       console.log(productData);
+      
       res.redirect("/admin/product");
     } catch (error) {
       console.log(error.message);

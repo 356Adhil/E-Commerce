@@ -8,7 +8,7 @@ const ObjectId = mongoose.Types.ObjectId;
 module.exports = {
   getCart: async (req,res)=> {
       console.log("cart list page")
-      const user = req.session.email
+      const user = req.session.userId
       const userId=req.session.userId 
       console.log("userid"+userId)
       try {
@@ -16,6 +16,7 @@ module.exports = {
         let Cart = await cart.findOne({ user_Id: ObjectId(req.session.userId) });
         console.log("Cart Exist" + Cart);
         if (Cart) {
+          console.log("akshay.............................");
           cartCount =Cart.products.length;
         }
           let getProducts=await cart.aggregate([
@@ -43,12 +44,12 @@ module.exports = {
                           products:1,quantity:1,productData:{$arrayElemAt:["$productData",0]}
                       }
                   }    
-      ])
+                ])
      
-  console.log("userid=>>>>>>>>>>>>>>>>>>>>>>...   "+userId)
+              console.log("userid=>>>>>>>>>>>>>>>>>>>>>>...   "+userId)
               
               if(getProducts.length>=1){
-                  console.log("my mind and me ")
+                  console.log("shobimn shajuuoooooooooooo ")
                       let singleProductPrice=await cart.aggregate ([
                           {$match:{user_Id:ObjectId(userId)}},
                           {$unwind:"$products"},
@@ -105,15 +106,17 @@ module.exports = {
              
               console.log( totalPrice[0].totalAmount)
               const total=totalPrice[0].totalAmount
-              res.render('user/cart',{getProducts ,userId,total,singleProductPrice,user,cartCount})
+              console.log("yaaasir");
+              console.log(total);
+              res.render('user/cart',{getProducts ,userId, total, singleProductPrice, user, cartCount})
               }else{
                   
-                  res.render('user/cart',{getProducts})
+                res.render('user/emptyCart',{ user, cartCount })
               }
           
           console.log(getProducts.length)  
-              
-      } 
+
+    } 
        catch (error) {
           console.log(error)
       }
@@ -208,6 +211,118 @@ module.exports = {
       console.log(error.message);
     }
   },
+
+  // ==================================== Start Some Ajax ========================== //
+
+    // ------------------------------- total amount ajax cart -------------------- //
+
+
+//   totalAmount: async(req,res) =>{
+
+//     const userId = req.session.userId;
+//     const userData = await User.findOne({email:userId});
+//     // console.log("without underscore",userData);
+//    // console.log(userData._id);
+//     const objId = mongoose.Types.ObjectId(userData._id);
+//     const product = mongoose.Types.ObjectId(req.body.product);
+//     if(req.session.consumer){
+//         if(userId){
+//             customer = true;
+//         } else {
+//             customer = false;
+//         }
+//     }
+//     const productData = await cart.aggregate([
+//         {
+//             $match: { userId:objId},
+//         },
+//         {
+//             $unwind:"$product",
+//         },
+//         {
+//             $project:{
+//                 productItem: "$product.productId",
+//                 productQuantity:"$product.quantity"
+//             },
+//         },
+//         {
+//             $lookup:{
+//                 from:"products",
+//                 localField:"productItem",
+//                 foreignField:"_id",
+//                 as:"productDetail"
+//             },
+//         },
+//         {
+//             $project:{
+//                 productItem : 1,
+//                 productQuantity : 1,
+//                 productDetail : {$arrayElemAt : ["$productDetail",0]},
+//             },
+//         },
+//         {
+//             $addFields:{
+//                 productPrice: {
+//                     $multiply: ["$productQuantity","$productDetail.price"],
+//                 },
+//             },
+//         },
+//         {
+//             $group:{
+//                 _id:userData.id,
+//                 total:{
+//                     $sum:{ $multiply:["$productQuantity","$productDetail.price"]},
+//                 },
+//                 productPrice: {
+//                     $push: {
+//                         item: "$productItem",
+//                         price: "$productPrice",
+//                     },
+//                 },
+//             }
+//         },
+//         {
+//             $project: {
+//                 total: 1,
+//                 _id: 1,                
+//                 product: {
+//                     $filter: {
+//                        input: "$productPrice",
+//                        as: "num",
+//                        cond: { $eq: ["$$num.item", product] }
+//                     }
+//                   }
+//             }
+//         }
+//     ]).exec();
+//     res.json({status:true,productData:productData[0]});
+   
+// },
+// -------------------------------------------------------------------------------------------------- //
+  // ------------------------------- Changing product Qty & price -------------------- //
+
+//   changeQuantity: async(req,res,next)=>{
+//     const data = req.body;
+//     const objId = mongoose.Types.ObjectId(data.product);
+//     data.count = parseInt(data.count);
+//     data.quantity = parseInt(data.quantity);
+//     if(data.count==-1 && data.quantity==1){
+//         res.json({quantity:true})
+//     }else{
+//         cart.updateOne(
+//             {
+//             _id:data.cart,"product.productId":objId
+//             },
+//             {$inc: { "product.$.quantity":data.count}}
+//         ).then(()=>{
+//             next();
+    
+//         })
+//     }
+// },
+
+  // ==================================== End Some Ajax ========================== //
+
 
   // ------------------------------- Changing product Qty & price -------------------- //
 

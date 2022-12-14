@@ -1,4 +1,3 @@
-const { response } = require("express");
 
 function ajaxCart(ID){
     $.ajax({

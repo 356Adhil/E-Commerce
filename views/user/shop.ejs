@@ -40,7 +40,7 @@
 					<!-- single product -->
 					<div class="col-lg-4 col-md-6">
 						<div class="single-product">
-							<a href="/productDetails">
+							<a href="/productDetails?id=<%= productData.id %>">
 							<img class="img-fluid" src="<%=productData.imageUrl[0].url%>" alt="">
 						</a>
 							<div class="product-details">
@@ -50,11 +50,19 @@
 									<h6 class="l-through">$210.00</h6>
 								</div>
 								<div class="prd-bottom">
+									
+									<% if (user) { %>
+										<a onclick="ajaxCart('<%= productData.id %>')" class="social-info">
+											<span class="ti-bag"></span>
+											<p class="hover-text">add to bag</p>
+										</a>
+										<% } else {%>
+											<a href="/login" class="social-info">
+												<span class="ti-bag"></span>
+												<p class="hover-text">add to bag</p>
+											</a>
+									<%}%>
 
-									<a onclick="ajaxCart('<%= productData.id %>')" class="social-info">
-										<span class="ti-bag"></span>
-										<p class="hover-text">add to bag</p>
-									</a>
 									<a href="" class="social-info">
 										<span class="lnr lnr-heart"></span>
 										<p class="hover-text">Wishlist</p>
