@@ -1,0 +1,214 @@
+<%-include('../includes/userHome')%>
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+      <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+        <div class="col-first">
+          <h1>Checkout</h1>
+          <nav class="d-flex align-items-center">
+  
+          </nav>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End Banner Area -->
+    <!--================Checkout Area =================-->
+    <section class="checkout_area section_gap">
+        <form id="payForm" class="row contact_form" action="/ProceedtoPay" method="post" novalidate="novalidate">
+
+        <div class="container">
+            <!-- <div class="cupon_area">
+                <div class="check_title">
+                    <h2>Have a coupon? <a href="#">Click here to enter your code</a></h2>
+                </div>
+                <input type="text" placeholder="Enter coupon code">
+                <a class="tp_btn" href="#">Apply Coupon</a>
+            </div> -->
+            <div class="billing_details container">
+                <div class="row ">
+                   
+
+                        <div class="col-lg-12">
+                        <div class="order_box">
+                            <h2>Your Order</h2>
+                            <ul class="list">
+                                <li><a >Product <span>Total</span></a></li>
+
+                                <% for(let i=0;i<getProducts.length;i++){%>
+
+                                <li><a ><%= getProducts[i].productData.title %><span class="middle" style="margin-left: 27%;">x<%= getProducts[i].quantity %></span> <span class="last">₹ <%= singleProductPrice[i].total %></span></a></li>
+
+                                <%}%>
+
+                            </ul>
+                            <ul class="list list_2">
+                                <li><a >Subtotal <span>₹ <%= totalPrice %></span></a></li>
+                                <li><a >Shipping <span>₹ 55.00</span></a></li>
+                                <li><a >Total <span>₹ <%= netPrice %></span></a></li>
+                            </ul>
+                            <div class="payment_item">
+                                <div class="radion_btn">
+                                    <input type="radio" id="f-option5" class="payButton" name="payment-method" value="COD" checked>
+                                    <label for="f-option5">COD</label>
+                                    <div class="check"></div>
+                                </div>
+                            </div>
+                            <div class="payment_item active">
+                                <div class="radion_btn">
+                                    <input type="radio" id="f-option6" class="payButtoni" name="payment-method" value="Paypal">
+                                    <label for="f-option6">Online Payment</label>
+                                    <img src="img/product/card.jpg" alt="">
+                                    <div class="check"></div>
+                                </div>
+                            </div>
+                            <!-- <div class="creat_account">
+                                <input type="checkbox" id="f-option4" name="selector">
+                                <label for="f-option4">I’ve read and accept the </label>
+                                <a href="#">terms & conditions*</a>
+                            </div> -->
+                            <div style="display: flex;justify-content: space-evenly;align-items: center;">
+                            <button type="submit" value="submit" class="primary-btn">
+                            Proceed to Pay
+                              </button>
+
+                          <button type="button" class="primary-btn" data-toggle="modal"
+                          data-target="#exampleModal">
+                            Add Address
+                              </button>
+                            </div>
+                        </div>
+                    
+                    </div>
+
+                </div>
+
+                        <section class="mt-5">
+                            <div class="container">
+                                <h5 style="font-family:Verdana, Geneva, Tahoma, sans-serif;">Select Address</h5>
+                                <select class="selectpicker col-lg-12 w-100" name="address">
+                                        <%for(let i=0;i<addressData.length  ;i++){ %>
+                                    <option class="col-lg-12 w-100 form-select"><%= addressData[i].name %>, <%= addressData[i].address %>, <%= addressData[i].pinCode %>, <%= addressData[i].mobileNumber %></option>
+                                    <%}%>
+                                  </select>
+                            </div>
+                        </section>
+
+            </form>
+
+
+
+<!-- Button trigger modal -->
+
+<!-- <button type="button" class="btn btn-secondary" data-toggle="modal"
+data-target="#exampleModal">
+Add address
+</button> -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add New Address</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+              
+
+
+            <form action="/addAddress" method="post">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="recipient-name"
+                            class="col-form-label">Name:</label>
+                        <input required type="text" class="form-control" id="housename"
+                            name="name" />
+                        <p id="houseError" style="color: red"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Phone Number:</label>
+                        <input required type="tel" class="form-control" id="area"
+                            name="mobile" />
+                        <p id="areaError" style="color: red"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Email:</label>
+                        <input required type="email" class="form-control" id="landmark"
+                            name="email" />
+                        <p id="landmarkError" style="color: red"></p>
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Address:</label>
+                        <input required type="text" class="form-control" id="landmark"
+                            name="address" />
+                        <p id="landmarkError" style="color: red"></p>
+                    </div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="firstName">Town/City:</label>
+                                <input required type="text" class="form-control"
+                                    id="city" name="city" />
+                                <p id="stateError" style="color: red"></p>
+                            </div>
+                            <!-- <div class="col-md-6 mb-3">
+                                <label for="lastName">State</label>
+                                <input required type="text" class="form-control" id="state"
+                                    name="state" />
+                                <p id="pincodeError" style="color: red"></p>
+                            </div> -->
+                            <div class="col-md-6 mb-3">
+                                <label for="lastName">Pincode</label>
+                                <input required type="tel" class="form-control" id="pincode"
+                                    name="pincode" />
+                                <p id="pincodeError" style="color: red"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="row">
+                            <!-- <div class="col-md-6 mb-3">
+                                <label for="firstName">Post office</label>
+                                <input required type="text" class="form-control"
+                                    id="postoffice" name="postoffice" />
+                                <p id="stateError" style="color: red"></p>
+                            </div> -->
+
+                            <!-- <div class="col-md-6 mb-3">
+                                <label for="lastName">Pincode</label>
+                                <input required type="tel" class="form-control" id="pincode"
+                                    name="pincode" />
+                                <p id="pincodeError" style="color: red"></p>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button style="background-color: red;" type="button" class="primary-btn" data-bs-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="submit" value="submit" class="primary-btn">
+                        Add
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+    </div>
+</div>
+</div>
+
+    </section>
+
+
+
+
+
+
+    <!--================End Checkout Area =================-->
+    <%-include('../includes/userFooter')%>
+

@@ -16,22 +16,7 @@ function ajaxCart(ID){
 
 }
  
-function ajaxDeleteProduct(ID){
-    $.ajax({
-        url:'/deleteCartProduct/'+ID,
-        method:'get',
-        success:(response)=>{
-            if(response.status=true){
-            console.log(response.status)
-           
-            let deleteCartProduct=$('#deleteCartProduct').html()
-            deleteCartProduct=parseInt(deleteCartProduct)+1;
-            $('#deleteCartProduct').html(deleteCartProduct)
-            
-        }}
-    })
 
-}
 function change_image(image){
 let container = document.getElementById("main-image");
 container.src = image.src;
@@ -40,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 });
 
 
-function changeQuantity(cartId,proId,singlePrice,count){
+function changeQuantity(cartId,proId,singlePrice,totalPrice,count){
     console.log("helloo bviyakk");
     let quantity=parseInt(document.getElementById('qty'+proId).value)
     $.ajax({
@@ -66,7 +51,8 @@ function changeQuantity(cartId,proId,singlePrice,count){
         else{
             downBtn.classList.remove('d-none')}
        }
-       document.getElementById('productPrice'+proId).innerHTML = (singlePrice*quantity)
+       let singleProductPrice = document.getElementById('productPrice'+proId).innerHTML = (singlePrice*quantity)  
+       location.reload();  
     }
 })
 

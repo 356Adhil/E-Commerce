@@ -22,8 +22,11 @@ module.exports = {
   postEditProduct: async (req, res) => {
     try {
       const id = req.params.id;
-      const editImage = req.files.map((f)=>({url:f.path, filename:f.filename}))
-      const imageProduct = await product.updateOne({ _id: id },{$set:{ imageUrl: editImage }})
+      console.log(req.files)
+      if(req.files.length>0){
+        const editImage = req.files.map((f)=>({url:f.path, filename:f.filename}))
+        const imageProduct = await product.updateOne({ _id: id },{$set:{ imageUrl: editImage }})  
+      }
       const productData = await product.updateOne(
         {_id: id },
         {

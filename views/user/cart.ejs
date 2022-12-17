@@ -56,13 +56,13 @@
                                             class="input-text qty" readonly>
                                             
 
-                                            <a onclick="changeQuantity('<%= getProducts[i]._id %>','<%= getProducts[i].productData._id %>','<%= getProducts[i].productData.price %>',1)" id="<%= getProducts[i].productData._id %>">
+                                            <a onclick="changeQuantity('<%= getProducts[i]._id %>','<%= getProducts[i].productData._id %>','<%= getProducts[i].productData.price %>','<%= total %>',1)" id="<%= getProducts[i].productData._id %>">
                                         <button onclick="var result = document.getElementById('qty<%= getProducts[i].productData._id %>'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
                                             class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
                                         </a>
                                         
 
-                                        <a onclick="changeQuantity('<%= getProducts[i]._id %>','<%= getProducts[i].productData._id %>','<%= getProducts[i].productData.price %>',-1)" id="down<%= getProducts[i].productData._id %>" class="<% if (getProducts[i].quantity < 2) { %> d-none <%}%> ">
+                                        <a onclick="changeQuantity('<%= getProducts[i]._id %>','<%= getProducts[i].productData._id %>','<%= getProducts[i].productData.price %>','<%= total %>',-1)" id="down<%= getProducts[i].productData._id %>" class="<% if (getProducts[i].quantity < 2) { %> d-none <%}%> ">
                                             <button onclick="var result = document.getElementById('qty<%= getProducts[i].productData._id %>'); var sst = result.value; if( !isNaN( sst ) & sst > 0 ) result.value--;return false;"
                                             class="reduced items-count " type="button"><i class="lnr lnr-chevron-down"></i></button>
                                         </a>
@@ -145,7 +145,7 @@
                                     <h5>Subtotal</h5>
                                 </td>
                                 <td>
-                                    <h5><%= total %></h5>
+                                    <h5 id="subTotal"><%= total %></h5>
                                 </td>
                             </tr>
                             <tr class="out_button_area">
@@ -161,7 +161,7 @@
                                 <td>
                                     <div class="checkout_btn_inner d-flex align-items-center">
                                         <a class=" btn gray_btn" href="/">Continue Shopping</a>
-                                        <a class=" btn primary-btn" href="#">Proceed to checkout</a>
+                                        <a class=" btn primary-btn" href="/checkout">Proceed to checkout</a>
                                     </div>
                                 </td>
                             </tr>

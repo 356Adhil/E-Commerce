@@ -68,6 +68,7 @@ module.exports = {
 
   getProduct: async (req, res) => {
     const productData = await product.find();
+    console.log(productData+"Hello Vinayakkkkkkkk........");
     res.render("admin/products", { product: productData });
   },
 
