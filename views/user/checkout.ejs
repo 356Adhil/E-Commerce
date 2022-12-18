@@ -83,17 +83,19 @@
 
                 </div>
 
-                        <section class="mt-5">
-                            <div class="container">
-                                <h5 style="font-family:Verdana, Geneva, Tahoma, sans-serif;">Select Address</h5>
-                                <select class="selectpicker col-lg-12 w-100" name="address">
-                                        <%for(let i=0;i<addressData.length  ;i++){ %>
-                                    <option class="col-lg-12 w-100 form-select"><%= addressData[i].name %>, <%= addressData[i].address %>, <%= addressData[i].pinCode %>, <%= addressData[i].mobileNumber %></option>
-                                    <%}%>
-                                  </select>
-                            </div>
-                        </section>
 
+                <section class="mt-5">
+                    <div class="single-element-widget mt-5">
+                        <div class="default-select" id="default-select">
+                            <h5>Select Address</h5>
+                            <select>
+                                <%for(let i=0;i<addressData.length  ;i++){ %>
+                            <option class="mt-3"><%= addressData[i].name %>, <%= addressData[i].address %>, <%= addressData[i].pinCode %>, <%= addressData[i].mobileNumber %></option>
+                            <%}%>
+                            </select>
+                        </div>
+                    </div>
+                </section>
             </form>
 
 
