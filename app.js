@@ -62,7 +62,7 @@ app.use(express.static("public"));
 app.use("/", userRouter);
 app.use("/admin", adminRouter);
 
-app.get("/*",(req,res)=>{
+app.get("*",(req,res)=>{
   res.render("user/404")
 })
 
