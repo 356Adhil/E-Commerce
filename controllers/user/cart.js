@@ -5,6 +5,7 @@ const category = require("../../models/category");
 const order = require("../../models/order");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
+const moment = require("moment")
 
 module.exports = {
   getCart: async (req, res) => {
@@ -242,20 +243,6 @@ module.exports = {
       const userId = req.session.userId;
       let userData = await User.findOne({ email: user });
 
-      let address = await order.aggregate([
-        { $match: { user_Id: ObjectId(userId) } },
-        {
-          $project: {
-            name: 1,
-            email: 1,
-            address: 1,
-            city: 1,
-            pincode: 1,
-            mobile: 1,
-          },
-        },
-      ]);
-
       let totalPrice = await cart.aggregate([
         { $match: { user_Id: ObjectId(userId) } },
 
@@ -370,7 +357,6 @@ module.exports = {
           netPrice,
           singleProductPrice,
           getProducts,
-          address,
         });
       }
     } catch (error) {
@@ -384,13 +370,48 @@ module.exports = {
     try {
       const user = req.session.email;
       const userId = req.session.userId;
-      // ---------------------------- total price ----- =>
+      let cartCount = 0;
+      let Cart = await cart.findOne({ user_Id: ObjectId(req.session.userId) });
+      console.log("Cart Exist" + Cart);
+      if (Cart) {
+        cartCount = Cart.products.length;
+      }
+      let userData = await User.findOne({ email: user });
 
-      /* ----------------------------- Getting product ------------------------------------ */
+      let getProducts = await cart.aggregate([
+        { $match: { user_Id: ObjectId(userId) } },
+
+        {
+          $unwind: "$products",
+        },
+        {
+          $project: {
+            products: "$products.product_Id",
+            quantity: "$products.quantity",
+          },
+        },
+        {
+          $lookup: {
+            from: "products",
+            localField: "products",
+            foreignField: "_id",
+            as: "productData",
+          },
+        },
+        {
+          $project: {
+            products: 1,
+            quantity: 1,
+            productData: { $arrayElemAt: ["$productData", 0] },
+          },
+        },
+      ]);
+      
 
       let productData = await cart.aggregate([
         { $match: { user_Id: ObjectId(userId) } },
       ]);
+
       let totalPrice = await cart.aggregate([
         { $match: { user_Id: ObjectId(userId) } },
 
@@ -428,6 +449,7 @@ module.exports = {
         },
         { $project: { _id: 0, totalAmount: 1 } },
       ]);
+
       /* -----------Creating-Order-------------- */
       const paymentMethod = req.body["payment-method"];
       const orderItem = productData[0].products;
@@ -441,13 +463,49 @@ module.exports = {
           paymentMethod: paymentMethod,
           address: address,
           orderStatus: orderStatus,
-          orderOn: new Date(),
+          orderOn: moment().format("MMM Do YY"),
+          deliveryDate:moment().add(3,"days").format("MMM Do YY"),
           totalAmount: totalAmount,
           orderItem: orderItem,
         })
-        .then(() => {
-          res.render("user/confirmation");
-        });
+
+          let singleProductPrice = await cart.aggregate([
+            { $match: { user_Id: ObjectId(userId) } },
+            { $unwind: "$products" },
+            {
+              $project: {
+                products: "$products.product_Id",
+                quantity: "$products.quantity",
+              },
+            },
+            {
+              $lookup: {
+                from: "products",
+                localField: "products",
+                foreignField: "_id",
+                as: "ProductData",
+              },
+            },
+            { $unwind: "$ProductData" },
+  
+            {
+              $project: {
+                total: { $multiply: ["$quantity", "$ProductData.price"] },
+              },
+            },
+            { $project: { _id: 0, total: 1 } },
+          ]);
+  
+          console.log("Checkout page rendered.........");
+          const shippingCharge = 55;
+          // totalPrice = totalPrice[0].totalAmount;
+          // netPrice = totalPrice + shippingCharge;
+        
+  
+        const addressData = userData.addressDetails;
+        const orderData = await order.findOne({ user_Id: ObjectId(userId) })
+          res.render("user/confirmation",{createOrder, user, cartCount, getProducts, totalAmount, singleProductPrice});
+        
     } catch (error) {
       console.log(error.message);
     }

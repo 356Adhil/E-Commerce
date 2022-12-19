@@ -37,6 +37,9 @@ const orderSchema = new schema({
     type: String,
     default: "not paid",
   },
+  deliveryDate: {
+    type:String,
+  },
   orderOn: {
     type: String,
   },

@@ -17,6 +17,8 @@ router.get("/logout", userLogin.getLogout);
 router.get("/productDetails/", userLogin.getProductDetails);
 router.get("/cart", cart.getCart);
 router.get("/checkout", verifyUser.verifyUserCart, cart.getCheckout);
+router.get("/profile",verifyUser.verifyUserCart,userSignup.getProfile)
+
 
 router.post("/ProceedtoPay", verifyUser.verifyUserCart, cart.ProceedtoPay);
 

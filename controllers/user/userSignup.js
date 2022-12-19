@@ -1,7 +1,11 @@
 const { response } = require("express");
 const User = require("../../models/signUp");
+const cart = require("../../models/cart")
+
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt")
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 let username;
 let email;
 let mobile;
@@ -75,5 +79,16 @@ module.exports = {
     } else {
       res.redirect("/otp");
     }
+  },
+
+  getProfile: async (req,res)=>{
+    let cartCount = 0;
+    let Cart = await cart.findOne({ user_Id: ObjectId(req.session.userId) });
+    console.log("Cart Exist");
+    if (Cart) {
+      cartCount = Cart.products.length;
+    }
+    const user = req.session.email
+    res.render("user/profile",{user, cartCount})
   },
 };

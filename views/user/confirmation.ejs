@@ -1,5 +1,5 @@
-<%-include('../includes/style')%>
-	<!-- Start Banner Area -->
+<%-include('../includes/userHome')%>
+<!-- Start Banner Area -->
 	<section class="banner-area organic-breadcrumb">
 		<div class="container">
 			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
@@ -20,33 +20,25 @@
 		<div class="container">
 			<h3 class="title_confirmation">Thank you. Your order has been received.</h3>
 			<div class="row order_d_inner">
-				<div class="col-lg-4">
+				<div class="col-lg-6">
 					<div class="details_item">
 						<h4>Order Info</h4>
 						<ul class="list">
-							<li><a href="#"><span>Order number</span> : 60235</a></li>
-							<li><a href="#"><span>Date</span> : Los Angeles</a></li>
-							<li><a href="#"><span>Total</span> : USD 2210</a></li>
-							<li><a href="#"><span>Payment method</span> : Check payments</a></li>
+
+							<li><a><span>Order number</span> : #<%= createOrder._id %></a></li>
+							<li><a><span>Date</span> : <%= createOrder.orderOn %></a></li>
+							<li><a><span>Total</span> : <%= createOrder.totalAmount %></a></li>
+							<li><a><span>Payment method</span> : <%= createOrder.paymentMethod %></a></li>
+							<li><a><span>Expected Delivery Date</span> : <%= createOrder.deliveryDate %></a></li>
+
 						</ul>
 					</div>
 				</div>
-				<div class="col-lg-4">
+				<div class="col-lg-6">
 					<div class="details_item">
 						<h4>Billing Address</h4>
 						<ul class="list">
-							<li><a href="#"><span>Street</span> : 56/8</a></li>
-							<li><a href="#"><span>City</span> : Los Angeles</a></li>
-							<li><a href="#"><span>Country</span> : United States</a></li>
-							<li><a href="#"><span>Postcode </span> : 36952</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-lg-4">
-					<div class="details_item">
-						<h4>Shipping Address</h4>
-						<ul class="list">
-							<li><a href="#"><span>Street</span> : 56/8</a></li>
+							<li><a><span>Address</span> : <%= createOrder.address %></a></li>
 							<li><a href="#"><span>City</span> : Los Angeles</a></li>
 							<li><a href="#"><span>Country</span> : United States</a></li>
 							<li><a href="#"><span>Postcode </span> : 36952</a></li>
@@ -66,39 +58,19 @@
 							</tr>
 						</thead>
 						<tbody>
+							<% for(let i=0;i<getProducts.length;i++){%>
 							<tr>
 								<td>
-									<p>Pixelstore fresh Blackberry</p>
+									<p><%= getProducts[i].productData.title %></p>
 								</td>
 								<td>
-									<h5>x 02</h5>
+									<h5>x <%= getProducts[i].quantity %></h5>
 								</td>
 								<td>
-									<p>$720.00</p>
+									<p>₹ <%= singleProductPrice[i].total %></p>
 								</td>
 							</tr>
-							<tr>
-								<td>
-									<p>Pixelstore fresh Blackberry</p>
-								</td>
-								<td>
-									<h5>x 02</h5>
-								</td>
-								<td>
-									<p>$720.00</p>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<p>Pixelstore fresh Blackberry</p>
-								</td>
-								<td>
-									<h5>x 02</h5>
-								</td>
-								<td>
-									<p>$720.00</p>
-								</td>
-							</tr>
+							<%}%>
 							<tr>
 								<td>
 									<h4>Subtotal</h4>
@@ -107,7 +79,7 @@
 									<h5></h5>
 								</td>
 								<td>
-									<p>$2160.00</p>
+									<p>₹ <%= totalAmount %></p>
 								</td>
 							</tr>
 							<tr>
@@ -118,7 +90,7 @@
 									<h5></h5>
 								</td>
 								<td>
-									<p>Flat rate: $50.00</p>
+									<p>₹ 55.00</p>
 								</td>
 							</tr>
 							<tr>
@@ -129,7 +101,7 @@
 									<h5></h5>
 								</td>
 								<td>
-									<p>$2210.00</p>
+									<p>₹ <%= netPrice %></p>
 								</td>
 							</tr>
 						</tbody>
@@ -138,4 +110,14 @@
 			</div>
 		</div>
 	</section>
+
+	<div class="container mb-5 pb-5">
+		<div class="row" style="display: flex;justify-content: center;">
+			<div class="col-lg-6" style="display: flex;justify-content: center;">
+				<a href="" class="btn btn-success">Download invoice</a>
+			</div>
+		</div>
+	</div>
+
 	<!--================End Order Details Area =================-->
+	    <%-include('../includes/userFooter')%>
