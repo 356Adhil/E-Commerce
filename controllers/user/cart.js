@@ -3,6 +3,7 @@ const cart = require("../../models/cart");
 const product = require("../../models/product");
 const category = require("../../models/category");
 const order = require("../../models/order");
+const wishlist = require("../../models/wishList")
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const moment = require("moment")
@@ -505,6 +506,7 @@ module.exports = {
         const addressData = userData.addressDetails;
         const orderData = await order.findOne({ user_Id: ObjectId(userId) })
           res.render("user/confirmation",{createOrder, user, cartCount, getProducts, totalAmount, singleProductPrice});
+          await cart.deleteOne({ user_Id: ObjectId(userId)})
         
     } catch (error) {
       console.log(error.message);
@@ -540,4 +542,199 @@ module.exports = {
     );
     res.redirect("/checkout");
   },
+
+  getWishList: async (req, res) => {
+    console.log("cart list page");
+    const user = req.session.userId;
+    const userId = req.session.userId;
+    console.log("userid" + userId);
+    try {
+      let cartCount = 0;
+      let wishList = await cart.findOne({ user_Id: ObjectId(req.session.userId) });
+      console.log("Cart Exist");
+      if (wishList) {
+        cartCount = wishList.products.length;
+      }
+      
+      let getProducts = await wishlist.aggregate([
+        { $match: { user_Id: ObjectId(userId) } },
+
+        {
+          $unwind: "$products",
+        },
+        {
+          $project: {
+            products: "$products.product_Id",
+            quantity: "$products.quantity",
+          },
+        },
+        {
+          $lookup: {
+            from: "products",
+            localField: "products",
+            foreignField: "_id",
+            as: "productData",
+          },
+        },
+        {
+          $project: {
+            products: 1,
+            quantity: 1,
+            productData: { $arrayElemAt: ["$productData", 0] },
+          },
+        },
+      ]);
+
+      if (getProducts.length >= 1) {
+        let singleProductPrice = await wishlist.aggregate([
+          { $match: { user_Id: ObjectId(userId) } },
+          { $unwind: "$products" },
+          {
+            $project: {
+              products: "$products.product_Id",
+              quantity: "$products.quantity",
+            },
+          },
+          {
+            $lookup: {
+              from: "products",
+              localField: "products",
+              foreignField: "_id",
+              as: "ProductData",
+            },
+          },
+          { $unwind: "$ProductData" },
+
+          {
+            $project: {
+              total: { $multiply: ["$quantity", "$ProductData.price"] },
+            },
+          },
+          { $project: { _id: 0, total: 1 } },
+        ]);
+
+        // ------------------------------------- Get total price ------------------------------------ //
+
+        let totalPrice = await wishlist.aggregate([
+          { $match: { user_Id: ObjectId(userId) } },
+
+          {
+            $unwind: "$products",
+          },
+          {
+            $project: {
+              products: "$products.product_Id",
+              quantity: "$products.quantity",
+            },
+          },
+          {
+            $lookup: {
+              from: "products",
+              localField: "products",
+              foreignField: "_id",
+              as: "productData",
+            },
+          },
+          {
+            $project: {
+              products: 1,
+              quantity: 1,
+              productData: { $arrayElemAt: ["$productData", 0] },
+            },
+          },
+          {
+            $group: {
+              _id: null,
+              totalAmount: {
+                $sum: { $multiply: ["$quantity", "$productData.price"] },
+              },
+            },
+          },
+          { $project: { _id: 0, totalAmount: 1 } },
+        ]);
+
+        console.log(totalPrice[0].totalAmount);
+        const total = totalPrice[0].totalAmount;
+        res.render("user/wishList", {
+          getProducts,
+          userId,
+          total,
+          singleProductPrice,
+          user,
+          cartCount,
+        });
+      } else {
+        res.render("user/emptyCart", { user, cartCount });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  getAddWishList: async (req, res) => {
+    try {
+      console.log("user cart get page");
+
+      const productId = req.params.id;
+      const userId = req.session.userId;
+      console.log("user_id :" + userId);
+      console.log(`product_id:${productId}`);
+
+      let userWishList = await wishlist.findOne({ user_Id: ObjectId(userId) });
+
+      if (userWishList) {
+        const product_Exist = await wishlist.findOne({
+          products: { $elemMatch: { product_Id: productId } },
+        });
+
+        if (product_Exist) {
+          addOneProduct(userId, productId);
+          console.log(addOneProduct);
+        }
+        // if there is no products in cart=>create new product in cart(by updating cart)
+        else {
+          let createNewProduct = await wishlist
+            .updateOne(
+              { user_Id: userId },
+              { $push: { products: { product_Id: productId } } }
+            )
+            .then(() => {
+              res.json({ status: true });
+            });
+        }
+      }
+      // user has not cart, create new Cart
+      // console.log("user has not cart")
+      else {
+        let createWishList = await wishlist
+          .create({
+            user_Id: userId,
+            products: [
+              {
+                product_Id: productId,
+                quantity: 1,
+              },
+            ],
+          })
+          .then(() => {
+            res.json({ status: true });
+          });
+      }
+
+      async function addOneProduct(userId, productId) {
+        let updateCart = await wishlist.updateOne(
+          {
+            user_Id: userId,
+            products: { $elemMatch: { product_Id: productId } },
+          },
+          { $inc: { "products.$.quantity": 1 } }
+        );
+        console.log("updated");
+      }
+      // res.redirect("/home")
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
 };

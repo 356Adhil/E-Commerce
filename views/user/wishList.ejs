@@ -5,10 +5,8 @@
         <div class="container">
             <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
                 <div class="col-first">
-                    <h1>Shopping Cart</h1>
+                    <h1>Wish List</h1>
                     <nav class="d-flex align-items-center">
-                        <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
-                        <a href="category.html">Cart</a>
                     </nav>
                 </div>
             </div>
@@ -29,14 +27,12 @@
                             <tr>
                                 <th scope="col">Product</th>
                                 <th scope="col">Price</th>
-                                <th scope="col">Quantity</th>
-                                <th scope="col">Total</th>
                             </tr>
                         </thead>
                         <tbody>
                             
                                 <% for(let i=0;i<getProducts.length;i++){%>
-                            <tr>
+                            <tr style="display: flex;justify-content: space-between;">
                                 <td>
                                     <div class="media">
                                         <div class="d-flex">
@@ -51,31 +47,7 @@
                                     <h5><%= getProducts[i].productData.price %></h5>
                                 </td>
                                 <td>
-                                    <div class="product_count">
-                                        <input type="text" name="qty" id="qty<%= getProducts[i].productData._id %>" maxlength="12" value="<%= getProducts[i].quantity %>" title="Quantity:"
-                                            class="input-text qty" readonly>
-                                            
-
-                                            <a onclick="changeQuantity('<%= getProducts[i]._id %>','<%= getProducts[i].productData._id %>','<%= getProducts[i].productData.price %>','<%= total %>',1)" id="<%= getProducts[i].productData._id %>">
-                                        <button onclick="var result = document.getElementById('qty<%= getProducts[i].productData._id %>'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
-                                            class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
-                                        </a>
-                                        
-
-                                        <a onclick="changeQuantity('<%= getProducts[i]._id %>','<%= getProducts[i].productData._id %>','<%= getProducts[i].productData.price %>','<%= total %>',-1)" id="down<%= getProducts[i].productData._id %>" class="<% if (getProducts[i].quantity < 2) { %> d-none <%}%> ">
-                                            <button onclick="var result = document.getElementById('qty<%= getProducts[i].productData._id %>'); var sst = result.value; if( !isNaN( sst ) & sst > 0 ) result.value--;return false;"
-                                            class="reduced items-count " type="button"><i class="lnr lnr-chevron-down"></i></button>
-                                        </a>
-
-                                        
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <h5 id="productPrice<%= getProducts[i].productData._id %>"><%= singleProductPrice[i].total %></h5>
-                                </td>
-                                <td>
-                                    <a id="deleteCartProduct" href="/deleteCartProduct/<%=getProducts[i]._id%>" class="btn btn-danger">Remove</a>
+                                    <a id="deleteCartProduct" href="/deleteCartProduct/<%=getProducts[i]._id%>" class="btn primary-btn">Add to Cart</a>
                                 </td>
                             </tr>
                             

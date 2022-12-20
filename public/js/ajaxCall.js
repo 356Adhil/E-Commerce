@@ -15,6 +15,22 @@ function ajaxCart(ID){
     })
 
 }
+function ajaxWishList(ID){
+    $.ajax({
+        url:'/add-wishList/'+ID,
+        method:'get',
+        success:(response)=>{
+            if(response.status=true){
+            console.log(response.status)
+           
+            let count=$('#count').html()
+            count=parseInt(count)+1;
+            $('#count').html(count)
+            
+        }}
+    })
+
+}
  
 
 function change_image(image){

@@ -18,6 +18,8 @@ router.get("/productDetails/", userLogin.getProductDetails);
 router.get("/cart", cart.getCart);
 router.get("/checkout", verifyUser.verifyUserCart, cart.getCheckout);
 router.get("/profile",verifyUser.verifyUserCart,userSignup.getProfile)
+router.get("/wishlist",cart.getWishList)
+router.get("/add-wishList/:id",cart.getAddWishList)
 
 
 router.post("/ProceedtoPay", verifyUser.verifyUserCart, cart.ProceedtoPay);
