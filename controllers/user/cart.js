@@ -7,6 +7,8 @@ const wishlist = require("../../models/wishList")
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const moment = require("moment")
+const instance = require("../../middlewares/razorpay")
+const crypto = require("crypto")
 
 module.exports = {
   getCart: async (req, res) => {
@@ -464,55 +466,45 @@ module.exports = {
           paymentMethod: paymentMethod,
           address: address,
           orderStatus: orderStatus,
-          orderOn: moment().format("MMM Do YY"),
           deliveryDate:moment().add(3,"days").format("MMM Do YY"),
+          orderOn: moment().format("MMM Do YY"),
           totalAmount: totalAmount,
           orderItem: orderItem,
-        })
-
-          let singleProductPrice = await cart.aggregate([
-            { $match: { user_Id: ObjectId(userId) } },
-            { $unwind: "$products" },
-            {
-              $project: {
-                products: "$products.product_Id",
-                quantity: "$products.quantity",
-              },
-            },
-            {
-              $lookup: {
-                from: "products",
-                localField: "products",
-                foreignField: "_id",
-                as: "ProductData",
-              },
-            },
-            { $unwind: "$ProductData" },
-  
-            {
-              $project: {
-                total: { $multiply: ["$quantity", "$ProductData.price"] },
-              },
-            },
-            { $project: { _id: 0, total: 1 } },
-          ]);
-  
-          console.log("Checkout page rendered.........");
-          const shippingCharge = 55;
-          // totalPrice = totalPrice[0].totalAmount;
-          // netPrice = totalPrice + shippingCharge;
+          
+        }).then((done)=>{
         
-  
-        const addressData = userData.addressDetails;
-        const orderData = await order.findOne({ user_Id: ObjectId(userId) })
-          res.render("user/confirmation",{createOrder, user, cartCount, getProducts, totalAmount, singleProductPrice});
-          await cart.deleteOne({ user_Id: ObjectId(userId)})
+        // const totalAmount = await order.findOne({user_Id:userId},{_id:0,totalAmount:1})
+        console.log("Total Amount......................................... : ");
+        console.log(totalAmount);
+
+          const oid = done._id
+          if (paymentMethod === 'COD') {
+            res.json([{ success: true, oid }]);
+        } else if (paymentMethod === 'Online Payment') {
+            console.log("hii ");
+            const amount = done.totalAmount * 100;
+            const options = {
+                amount,
+                currency: 'INR',
+                receipt: `${oid}`,
+            };
+            instance.orders.create(options, (err, orders) => {
+                if (err) {
+                    console.log("error");
+                    console.log(err);
+                } else {
+                    console.log("success")
+                    res.json([{ success: false, orders }]);
+                }
+            })
+          }
+        })
+     
         
     } catch (error) {
       console.log(error.message);
     }
   },
-
   // -------------------- Add Address -------------------------------- //
 
   addAddress: async (req, res) => {
@@ -736,5 +728,121 @@ module.exports = {
       console.log(error);
     }
   },
+
+
+  verifyPayment : (req, res) => {
+    
+    const details = req.body;
+    // console.log(details);
+    let hmac = crypto.createHmac('sha256', 'Ka4Y2F305vUYL32ecLwxsgWF');
+    hmac.update(
+       
+        details.payment.razorpay_order_id +
+        
+        '|' +
+        
+        details.payment.razorpay_payment_id
+    );
+    hmac = hmac.digest('hex');
+    
+    if (hmac == details.payment.razorpay_signature) {
+        const objId = mongoose.Types.ObjectId(details.order.receipt);
+        // console.log(objId);
+        order
+            .updateOne({ _id: objId }, { $set: { paymentStatus: 'Paid' } })
+            .then(() => {
+                res.json({ success: true, oid: details.order.receipt });
+            })
+            .catch((err) => {
+                console.log(err);
+                res.json({ status: false, err_message: 'payment failed' });
+            });
+    } else {
+        res.json({ status: false, err_message: 'payment faileded' });
+    }
+},
+
+
+paymentFailure : (req, res) => {
+    const details = req.body;
+    console.log(details);
+    res.send('payment failed');
+},
+
+confirmation: async (req,res)=>{
+  const user = req.session.email
+  const userId = req.session.userId
+  const oid = req.params.oid;
+  
+  let getProducts = await cart.aggregate([
+    { $match: { user_Id: ObjectId(userId) } },
+
+    {
+      $unwind: "$products",
+    },
+    {
+      $project: {
+        products: "$products.product_Id",
+        quantity: "$products.quantity",
+      },
+    },
+    {
+      $lookup: {
+        from: "products",
+        localField: "products",
+        foreignField: "_id",
+        as: "productData",
+      },
+    },
+    {
+      $project: {
+        products: 1,
+        quantity: 1,
+        productData: { $arrayElemAt: ["$productData", 0] },
+      },
+    },
+  ]);
+
+  let singleProductPrice = await cart.aggregate([
+    { $match: { user_Id: ObjectId(userId) } },
+    { $unwind: "$products" },
+    {
+      $project: {
+        products: "$products.product_Id",
+        quantity: "$products.quantity",
+      },
+    },
+    {
+      $lookup: {
+        from: "products",
+        localField: "products",
+        foreignField: "_id",
+        as: "ProductData",
+      },
+    },
+    { $unwind: "$ProductData" },
+
+    {
+      $project: {
+        total: { $multiply: ["$quantity", "$ProductData.price"] },
+      },
+    },
+    { $project: { _id: 0, total: 1 } },
+  ]);
+
+  let cartCount = 0;
+  let Cart = await cart.findOne({ user_Id: ObjectId(req.session.userId) });
+  console.log("Cart Exist");
+  if (Cart) {
+    cartCount = Cart.products.length;
+  }
+
+  const orderItem = await order.findOne({_id: oid})
+
+  res.render("user/confirmation",{user,cartCount,getProducts,orderItem,singleProductPrice})
+  res.end()
+  await cart.deleteOne({user_Id:userId})
+},
+
 
 };

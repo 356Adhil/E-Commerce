@@ -22,7 +22,12 @@ router.get("/wishlist",cart.getWishList)
 router.get("/add-wishList/:id",cart.getAddWishList)
 
 
-router.post("/ProceedtoPay", verifyUser.verifyUserCart, cart.ProceedtoPay);
+router.post("/orderconfirmed",cart.ProceedtoPay)
+
+router.post("/verifyPayment",cart.verifyPayment)
+router.get("/paymentFail",cart.paymentFailure)
+
+router.get("/confirmation/:oid",cart.confirmation)
 
 router.post("/addAddress", cart.addAddress);
 

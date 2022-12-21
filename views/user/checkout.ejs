@@ -15,7 +15,7 @@
   <!-- End Banner Area -->
     <!--================Checkout Area =================-->
     <section class="checkout_area section_gap">
-        <form id="payForm" class="row contact_form" action="/ProceedtoPay" method="post" novalidate="novalidate">
+        <form id="checkout" class="row contact_form" method="post" novalidate="novalidate">
 
         <div class="container">
             <!-- <div class="cupon_area">
@@ -44,8 +44,8 @@
                             </ul>
                             <ul class="list list_2">
                                 <li><a >Subtotal <span>₹ <%= totalPrice %></span></a></li>
-                                <li><a >Shipping <span>₹ 55.00</span></a></li>
-                                <li><a >Total <span>₹ <%= netPrice %></span></a></li>
+                                <li><a >Shipping <span>Free Shipping</span></a></li>
+                                <li><a >Total <span>₹ <%= totalPrice %></span></a></li>
                             </ul>
                             <div class="payment_item">
                                 <div class="radion_btn">
@@ -200,9 +200,75 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
     </section>
 
 
+<script>
+
+
+$("#checkout").submit((e) => {
+    e.preventDefault();
+      $.ajax({
+      url: "/orderconfirmed",
+      method: "post",
+      data: $("#checkout").serialize(),
+      success: (response) => {
+            if (response[0].success) {
+              location.href = `/confirmation/${response[0].oid}`;
+            } else {
+              console.log(response[0].orders);
+              razorPay(response[0].orders);
+            }
+        },
+      });
+  });
+
+    function razorPay(order) {
+        var options = {
+          key: "rzp_test_tN9rva6tbuI8ng", // Enter the Key ID generated from the Dashboard
+          amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+          currency: "INR",
+          name: "RIGHT FIT",
+          description: "Test Transaction",
+          order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+          handler: function (response) {
+            verifyPayment(response, order);
+          },
+          prefill: {
+            name: "Adhil",
+            email: "356adhil@gmail.com",
+            contact: "9847531356",
+          },
+          notes: {
+            address: "Razorpay Corporate Office",
+          },
+          theme: {
+            color: "#3399cc",
+          },
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.on("payment.failed", function (response) {
+        });
+        rzp1.open();
+      }
 
 
 
+      function verifyPayment(payment, order) {
+      $.ajax({
+      url: "/verifyPayment",
+      data: {
+        payment,
+        order,
+      },
+      method: "post",
+      success: (response) => {
+        if (response.success) {
+          location.href = `/confirmation/${response.oid}`;
+        } else {
+          location.href = "/paymentFail";
+        }
+      },
+    });
+  }
+</script>
 
     <!--================End Checkout Area =================-->
     <%-include('../includes/userFooter')%>
