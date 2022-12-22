@@ -75,7 +75,7 @@
                                     <h5 id="productPrice<%= getProducts[i].productData._id %>"><%= singleProductPrice[i].total %></h5>
                                 </td>
                                 <td>
-                                    <a id="deleteCartProduct" href="/deleteCartProduct/<%=getProducts[i]._id%>" class="btn btn-danger">Remove</a>
+                                    <a id="deleteCartProduct" onclick="return removeProduct('<%=getProducts[i]._id%>','<%= getProducts[i].productData._id %>')" class="btn btn-danger">Remove</a>
                                 </td>
                             </tr>
                             

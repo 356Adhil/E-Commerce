@@ -73,3 +73,18 @@ function changeQuantity(cartId,proId,singlePrice,totalPrice,count){
 })
 
 }
+
+        function removeProduct(cartId, productId) {
+            $.ajax({
+              url: "/removeProduct",
+              data: {
+                cart: cartId,
+                product: productId,
+              },
+              method: "post",
+              success: () => {
+                location.reload();
+              },
+            });
+          }
+

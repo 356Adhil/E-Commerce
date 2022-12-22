@@ -1,11 +1,12 @@
 const { response } = require("express");
 const User = require("../../models/signUp");
-const cart = require("../../models/cart")
-require('dotenv').config()
+const cart = require("../../models/cart");
+require("dotenv").config();
 
 const nodemailer = require("nodemailer");
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
+const order = require("../../models/order");
 const ObjectId = mongoose.Types.ObjectId;
 let username;
 let email;
@@ -82,14 +83,69 @@ module.exports = {
     }
   },
 
-  getProfile: async (req,res)=>{
+  getProfile: async (req, res) => {
     let cartCount = 0;
     let Cart = await cart.findOne({ user_Id: ObjectId(req.session.userId) });
     console.log("Cart Exist");
     if (Cart) {
       cartCount = Cart.products.length;
     }
-    const user = req.session.email
-    res.render("user/profile",{user, cartCount})
+    const user = req.session.email;
+    res.render("user/profile", { user, cartCount });
+  },
+
+  getOrderDetails: async (req, res) => {
+    try {
+      const user = req.session.email;
+      const userId = req.session.userId;
+      let cartCount = 0;
+      let Cart = await cart.findOne({ user_Id: ObjectId(req.session.userId) });
+      console.log("Cart Exist");
+      if (Cart) {
+        cartCount = Cart.products.length;
+      }
+
+      let orderDetails = await order.aggregate([
+        { $match: { user_Id: ObjectId(userId) } },
+        { $unwind: "$orderItem" },
+      ]);
+      console.log("heyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
+      console.log(orderDetails);
+      res.render("user/orderDetails", { orderDetails, user, cartCount });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  getOrderProductDetails: (req, res) => {
+    try {
+      res.render("user/orderProductDetails");
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  getForgotPassword: (req,res)=>{
+    try {
+      res.render("user/forgotPass")
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  getForgotPassOtp: (req,res)=>{
+    try {
+      res.render("user/forgotPassOtp")
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  postForgotPassOtp: (req,res)=>{
+    try {
+      res.redirect("user/forgotPassOtp")
+    } catch (error) {
+      console.log(error);
+    }
   },
 };

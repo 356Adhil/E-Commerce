@@ -1,0 +1,146 @@
+<%-include('../includes/userHome')%>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description"
+        content="Responsive Bootstrap4 Shop Template, Created by Imran Hossain from https://imransdesign.com/">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+        
+    <!-- razorpay -->
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <!-- razorpay -->
+
+    <!-- title -->
+    <title>Fruitkha - Slider Version</title>
+
+    <!-- favicon -->
+    <link rel="shortcut icon" type="image/png" href="assets/img/favicon.png">
+    <!-- google font -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+    <!-- fontawesome -->
+    <link rel="stylesheet" href="/assets/css/all.min.css">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <!-- owl carousel -->
+    <link rel="stylesheet" href="/assets/css/owl.carousel.css">
+    <!-- magnific popup -->
+    <link rel="stylesheet" href="/assets/css/magnific-popup.css">
+    <!-- animate css -->
+    <link rel="stylesheet" href="/assets/css/animate.css">
+    <!-- mean menu css -->
+    <link rel="stylesheet" href="/assets/css/meanmenu.min.css">
+    <!-- main style -->
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <!-- responsive -->
+    <link rel="stylesheet" href="/assets/css/responsive.css">
+
+</head>
+<body>
+  <!-- Middle section -->
+  <div class="container">
+    <div class="mb-100 mt-100">
+
+      <div class="d-flex justify-content-center">
+        <div class="bg-light" style="height: 170px;width: 400px;">
+
+          <!-- <div class=" d-flex justify-content-center">
+            <h6 class="text-decoration-underline">Delivery address for this order</h6>
+          </div> -->
+                
+          <!-- <div class="ms-3">
+              <p>Adhil,<br>nilambur Edakkara,<br>ph: 9847531356</p>
+          </div> -->
+          <div class="container mt-5">
+            <h1>Order Details</h1>
+        </div>
+
+        </div>
+      </div>
+
+      <table class="table table-success table-striped">
+        <thead>
+          <tr>
+              <th scope="col">No.</th>
+            <th scope="col">Order Id</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Payment Status</th>
+            <th scope="col">Order Status</th>
+            <th scope="col">Expected Date</th>
+            <th scope="col">Product Details</th>
+
+          </tr>
+        </thead>
+        <tbody>
+            <%for(let i=0;i<orderDetails.length;i++){%>
+            <tr>
+                <td>
+                    <%=[i+1]%>
+                  </td>
+              <td>
+               <%=orderDetails[i]._id%>
+              </td>
+              <td>
+                <%=orderDetails[i].totalAmount%>
+              </td>
+              <td>
+                <%=orderDetails[i].paymentStatus%>
+              </td>
+              <td>
+                <%=orderDetails[i].orderStatus%>
+              </td>
+                  
+                    <td>
+                        <%=orderDetails[i].deliveryDate%>
+                    </td>
+                    <td>
+                      <a href="/order-product-details/<%=orderDetails[i]._id%>" class="btn btn-success">Product Detail</a>
+                    </td>
+            </tr>
+        <%}%>
+
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+
+
+
+  <!--End Middle section -->
+
+  <!-- footer -->
+    <!-- end footer -->
+
+
+
+    <!-- jquery -->
+    <script src="assets/js/jquery-1.11.3.min.js"></script>
+    <!-- bootstrap -->
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <!-- count down -->
+    <script src="assets/js/jquery.countdown.js"></script>
+    <!-- isotope -->
+    <script src="assets/js/jquery.isotope-3.0.6.min.js"></script>
+    <!-- waypoints -->
+    <script src="assets/js/waypoints.js"></script>
+    <!-- owl carousel -->
+    <script src="assets/js/owl.carousel.min.js"></script>
+    <!-- magnific popup -->
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <!-- mean menu -->
+    <script src="assets/js/jquery.meanmenu.min.js"></script>
+    <!-- sticker js -->
+    <script src="assets/js/sticker.js"></script>
+    <!-- main js -->
+    <script src="assets/js/main.js"></script>
+
+    </body>
+
+    </html>

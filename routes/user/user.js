@@ -20,6 +20,12 @@ router.get("/checkout", verifyUser.verifyUserCart, cart.getCheckout);
 router.get("/profile",verifyUser.verifyUserCart,userSignup.getProfile)
 router.get("/wishlist",cart.getWishList)
 router.get("/add-wishList/:id",cart.getAddWishList)
+router.get("/orders",verifyUser.verifyUserCart,userSignup.getOrderDetails)
+router.get("/order-product-details",userSignup.getOrderProductDetails)
+router.get("/forgotPassword",userSignup.getForgotPassword)
+
+router.get("/forgotPassOtp",userSignup.getForgotPassOtp)
+router.post("/forgotPassOtp",userSignup.getForgotPassOtp)
 
 
 router.post("/orderconfirmed",cart.ProceedtoPay)
@@ -34,6 +40,8 @@ router.post("/addAddress", cart.addAddress);
 router.get("/add-cart/:id", cart.getAddCart);
 router.post("/changeQty", cart.changeQuantity);
 // router.get("/deleteCartProduct/:id",cart.deleteCartProduct)
+
+router.post("/removeProduct",cart.postremoveProduct)
 
 router.post("/", userSignup.postSignup);
 router.post("/home", userLogin.postHome);

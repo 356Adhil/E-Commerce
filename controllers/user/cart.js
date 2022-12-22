@@ -844,4 +844,22 @@ confirmation: async (req,res)=>{
 },
 
 
+postremoveProduct: async (req, res) => {
+  const cartId=req.body.cart
+  const productId=req.body.product;
+
+  console.log("sankeerthan");
+  console.log(cartId);
+  console.log(productId);
+
+
+  let removeCart=await cart.updateOne({_id:ObjectId(cartId)},
+  {$pull:{products:{product_Id:productId}}} 
+)
+.then(()=>{
+  res.json({status:true});
+})
+},
+
+
 };

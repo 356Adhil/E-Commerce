@@ -4,11 +4,7 @@
   <div class="container">
     <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
       <div class="col-first">
-        <h1>Login</h1>
-        <nav class="d-flex align-items-center">
-          <a href="/">Home<span class="lnr lnr-arrow-right"></span></a>
-
-        </nav>
+        <h1>Forgot Password ?</h1>
       </div>
     </div>
   </div>
@@ -18,8 +14,8 @@
 <!--================Login Box Area =================-->
 <section class="login_box_area section_gap">
   <div class="container">
-    <div class="row">
-      <div class="col-lg-6">
+    <div class="row d-flex justify-content-center">
+      <!-- <div class="col-lg-6">
         <div class="login_box_img">
           <img class="img-fluid" src="img/login.jpg" alt="" />
           <div class="hover">
@@ -27,30 +23,20 @@
             <a class="primary-btn" href="/signup">Create an Account</a>
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="col-lg-6">
         <div class="login_form_inner">
-          <h3>Log in to enter</h3>
-          <form class="row login_form" action="/home" method="post" id="contactForm" novalidate="novalidate">
+          <h3>Enter Email</h3>
+          <form class="row login_form" action="/forgotPassOtp" method="post" id="contactForm" novalidate="novalidate">
             <div class="col-md-12 form-group">
               <input type="email" class="form-control" id="name" name="email" placeholder="Email"
                 onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'" />
             </div>
+
             <div class="col-md-12 form-group">
-              <input type="password" class="form-control" id="name" name="password" placeholder="Password"
-                onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'" />
-            </div>
-            <!-- <div class="col-md-12 form-group">
-                  <div class="creat_account">
-                    <input type="checkbox" id="f-option2" name="selector" />
-                    <label for="f-option2">Keep me logged in</label>
-                  </div>
-                </div> -->
-            <div class="col-md-12 form-group">
-              <button type="submit" value="submit" class="primary-btn">
-                Log In
+              <button type="submit" value="submit" class="primary-btn mb-5">
+                Submit
               </button>
-              <a href="/forgotPassword">Forgot Password?</a>
             </div>
           </form>
         </div>
