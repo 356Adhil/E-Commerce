@@ -841,7 +841,6 @@ confirmation: async (req,res)=>{
 
   res.render("user/confirmation",{user,cartCount,getProducts,orderItem,singleProductPrice})
   res.end()
-  await cart.deleteOne({user_Id:userId})
 },
 
 

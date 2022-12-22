@@ -1,6 +1,7 @@
 const { response } = require("express");
 const User = require("../../models/signUp");
 const cart = require("../../models/cart")
+require('dotenv').config()
 
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt")
@@ -14,8 +15,8 @@ let password;
 let mailTransporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "officialrightfit@gmail.com",
-    pass: "qzmdlyemyjxczjia",
+    user: process.env.NODEMAILER_USER_EMAIL,
+    pass: process.env.NODEMAILER_USER_PASS,
   },
 });
 const OTP = `${Math.floor(1000 + Math.random() * 9000)}`;
@@ -32,7 +33,7 @@ module.exports = {
     password = await bcrypt.hash(req.body.password, 10);
 
     let mailDetails = {
-      from: "officialrightfit@gmail.com",
+      from: process.env.NODEMAILER_USER_EMAIL,
       to: email,
       subject: "RIGHT FIT ACCOUNT REGISTRATION",
       html: `<p>YOUR OTP FOR REGISTERING IN RIGHT FIT IS <br><h1>${OTP}</h1></p>`,

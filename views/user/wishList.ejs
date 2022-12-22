@@ -47,7 +47,7 @@
                                     <h5><%= getProducts[i].productData.price %></h5>
                                 </td>
                                 <td>
-                                    <a id="deleteCartProduct" onclick="ajaxCart('<%= getProducts[i].productData.id %>')" class="btn btn-success">Add to Cart</a>
+                                    <a id="deleteCartProduct" onclick="ajaxCart('<%= getProducts[i].productData._id %>')" class="btn btn-success">Add to Cart</a>
                                 </td>
                             </tr>
                             <%}%>

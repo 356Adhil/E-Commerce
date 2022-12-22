@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
-
+require('dotenv').config()
 // const expressLayouts = require("express-ejs-layouts");
 // const path = require("path");
 
