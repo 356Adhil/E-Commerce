@@ -22,10 +22,14 @@ router.get("/wishlist",cart.getWishList)
 router.get("/add-wishList/:id",cart.getAddWishList)
 router.get("/orders",verifyUser.verifyUserCart,userSignup.getOrderDetails)
 router.get("/order-product-details",userSignup.getOrderProductDetails)
+
 router.get("/forgotPassword",userSignup.getForgotPassword)
 
-router.get("/forgotPassOtp",userSignup.getForgotPassOtp)
-router.post("/forgotPassOtp",userSignup.getForgotPassOtp)
+router.post("/forgotPassword",userSignup.postForgotPassword)
+
+router.post("/forgotPassOtp",userSignup.postForgotPassOtp)
+
+router.post("/resetPass",userSignup.postResetPass)
 
 
 router.post("/orderconfirmed",cart.ProceedtoPay)

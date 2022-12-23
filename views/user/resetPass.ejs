@@ -4,7 +4,7 @@
   <div class="container">
     <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
       <div class="col-first">
-        <h1>Forgot Password ?</h1>
+        <h1>New Password</h1>
       </div>
     </div>
   </div>
@@ -17,15 +17,19 @@
     <div class="row d-flex justify-content-center">
       <div class="col-lg-6">
         <div class="login_form_inner">
-          <h3>Enter Otp</h3>
-          <form class="row login_form" action="/resetPass" method="post" id="contactForm" novalidate="novalidate">
+          <h3>Enter New Password</h3>
+          <form class="row login_form" action="" method="post" id="contactForm" novalidate="novalidate">
             <div class="col-md-12 form-group">
-              <input type="email" class="form-control" id="name" readonly value="<%= email %>" name="email" placeholder="Email"
-                onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'" />
+              <input type="email" class="form-control" id="name" name="email" value="<%= email %>" readonly placeholder="New Password"
+                onfocus="this.placeholder = ''" onblur="this.placeholder = 'New Password'" />
             </div>
             <div class="col-md-12 form-group">
-              <input type="tel" class="form-control" id="name" name="password" placeholder="OTP"
-                onfocus="this.placeholder = ''" onblur="this.placeholder = 'OTP'" />
+              <input type="password" class="form-control" id="name" name="newpassword" placeholder="New Password"
+                onfocus="this.placeholder = ''" onblur="this.placeholder = 'New Password'" />
+            </div>
+            <div class="col-md-12 form-group">
+              <input type="password" class="form-control" id="name" name="confirmpassword" placeholder="Corfirm Password"
+                onfocus="this.placeholder = ''" onblur="this.placeholder = 'Corfirm Password'" />
             </div>
             <!-- <div class="col-md-12 form-group">
                   <div class="creat_account">

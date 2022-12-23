@@ -127,15 +127,42 @@ module.exports = {
 
   getForgotPassword: (req,res)=>{
     try {
+   
       res.render("user/forgotPass")
     } catch (error) {
       console.log(error);
     }
   },
 
-  getForgotPassOtp: (req,res)=>{
+  postForgotPassword: async (req,res)=>{
     try {
-      res.render("user/forgotPassOtp")
+      let email = req.body.email
+
+      let userData = await User
+      .findOne({ email: email })
+      if (userData) {
+      console.log(email);
+
+      let mailDetails = {
+        from: process.env.NODEMAILER_USER_EMAIL,
+        to: email,
+        subject: "RIGHT FIT ACCOUNT REGISTRATION",
+        html: `<p>YOUR OTP FOR REGISTERING IN RIGHT FIT IS <br><h1>${OTP}</h1></p>`,
+      };
+      console.log(mailDetails);
+
+        mailTransporter.sendMail(mailDetails, function (err, data) {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log("Email Sent Successfully");
+            res.render("user/forgotPassOtp",{email});
+          }
+        });
+      } else{
+        res.redirect("/forgotPass")
+      }
+  
     } catch (error) {
       console.log(error);
     }
@@ -143,9 +170,46 @@ module.exports = {
 
   postForgotPassOtp: (req,res)=>{
     try {
-      res.redirect("user/forgotPassOtp")
+      let { otp } = req.body;
+      if (OTP === otp) {
+        res.render("user/resetPass")
+      }
     } catch (error) {
-      console.log(error);
+     console.log(error);
+    //  res.render('500');
     }
   },
+
+  postResetPass : async (req,res)=>{
+    try {
+     let data= req.body
+     let email = req.body.email
+     if (data.newpassword && data.confirmpassword ) {
+       if (data.newpassword === data.confirmpassword) {
+         let newPassword = await bcrypt.hash(data.newpassword, 10)
+         
+         User.updateOne({ email: email},
+           {
+             $set:{
+               password:newPassword
+             }
+           }
+           ).then(()=>{
+             res.redirect('/login')
+           })
+         
+       } else {
+        res.render("user/resetPass",{email})
+      }
+       
+     } else {
+      res.render("user/resetPass",{email})
+     }
+    } catch (error) {
+     console.log(error);
+    //  res.render('500');
+    }
+     
+   },
+ 
 };
