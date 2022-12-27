@@ -1,6 +1,8 @@
 const { response } = require("express");
 const User = require("../../models/signUp");
 const cart = require("../../models/cart");
+const coupon = require("../../models/coupon");
+
 require("dotenv").config();
 
 const nodemailer = require("nodemailer");
@@ -125,91 +127,121 @@ module.exports = {
     }
   },
 
-  getForgotPassword: (req,res)=>{
+  getForgotPassword: (req, res) => {
     try {
-   
-      res.render("user/forgotPass")
+      res.render("user/forgotPass");
     } catch (error) {
       console.log(error);
     }
   },
 
-  postForgotPassword: async (req,res)=>{
+  postForgotPassword: async (req, res) => {
     try {
-      let email = req.body.email
+      let email = req.body.email;
 
-      let userData = await User
-      .findOne({ email: email })
+      let userData = await User.findOne({ email: email });
       if (userData) {
-      console.log(email);
+        console.log(email);
 
-      let mailDetails = {
-        from: process.env.NODEMAILER_USER_EMAIL,
-        to: email,
-        subject: "RIGHT FIT ACCOUNT REGISTRATION",
-        html: `<p>YOUR OTP FOR REGISTERING IN RIGHT FIT IS <br><h1>${OTP}</h1></p>`,
-      };
-      console.log(mailDetails);
+        let mailDetails = {
+          from: process.env.NODEMAILER_USER_EMAIL,
+          to: email,
+          subject: "RIGHT FIT ACCOUNT REGISTRATION",
+          html: `<p>YOUR OTP FOR REGISTERING IN RIGHT FIT IS <br><h1>${OTP}</h1></p>`,
+        };
+        console.log(mailDetails);
 
         mailTransporter.sendMail(mailDetails, function (err, data) {
           if (err) {
             console.log(err);
           } else {
             console.log("Email Sent Successfully");
-            res.render("user/forgotPassOtp",{email});
+            res.render("user/forgotPassOtp", { email });
           }
         });
-      } else{
-        res.redirect("/forgotPass")
+      } else {
+        res.redirect("/forgotPass");
       }
-  
     } catch (error) {
       console.log(error);
     }
   },
 
-  postForgotPassOtp: (req,res)=>{
+  postForgotPassOtp: (req, res) => {
     try {
       let { otp } = req.body;
       if (OTP === otp) {
-        res.render("user/resetPass")
+        res.render("user/resetPass");
       }
     } catch (error) {
-     console.log(error);
-    //  res.render('500');
+      console.log(error);
+      //  res.render('500');
     }
   },
 
-  postResetPass : async (req,res)=>{
+  postResetPass: async (req, res) => {
     try {
-     let data= req.body
-     let email = req.body.email
-     if (data.newpassword && data.confirmpassword ) {
-       if (data.newpassword === data.confirmpassword) {
-         let newPassword = await bcrypt.hash(data.newpassword, 10)
-         
-         User.updateOne({ email: email},
-           {
-             $set:{
-               password:newPassword
-             }
-           }
-           ).then(()=>{
-             res.redirect('/login')
-           })
-         
-       } else {
-        res.render("user/resetPass",{email})
+      let data = req.body;
+      let email = req.body.email;
+      if (data.newpassword && data.confirmpassword) {
+        if (data.newpassword === data.confirmpassword) {
+          let newPassword = await bcrypt.hash(data.newpassword, 10);
+
+          User.updateOne(
+            { email: email },
+            {
+              $set: {
+                password: newPassword,
+              },
+            }
+          ).then(() => {
+            res.redirect("/login");
+          });
+        } else {
+          res.render("user/resetPass", { email });
+        }
+      } else {
+        res.render("user/resetPass", { email });
       }
-       
-     } else {
-      res.render("user/resetPass",{email})
-     }
     } catch (error) {
-     console.log(error);
-    //  res.render('500');
+      console.log(error);
+      //  res.render('500');
     }
-     
-   },
- 
+  },
+
+  couponCheck: async (req, res) => {
+    const uid = ObjectId(req.session.userId);
+    const { code, amount } = req.body;
+    const check = await coupon.findOne({ couponName: code });
+    if (check) {
+      console.log("Checked ............");
+      console.log(req.body.userId);
+      const existingUser = await coupon
+        .findOne({ couponName: code, users: ObjectId(req.body.userId) })
+
+        .then((data, err) => {
+          if (data) {
+            res.json([{ success: false, message: "Coupon already used" }]);
+          } else {
+            let discount = 0;
+            const off = (Number(amount) * Number(check.discount)) / 100;
+            if (off > Number(check.maxLimit)) {
+              discount = Number(check.maxLimit);
+            } else {
+              discount = off;
+            }
+            res.json([
+              {
+                success: true,
+                dis: discount,
+                code,
+              },
+              { check },
+            ]);
+          }
+        });
+    } else {
+      res.json([{ success: false, message: "Coupon invalid" }]);
+    }
+  },
 };

@@ -7,6 +7,7 @@ const adminLogin = require("../../controllers/admin/adminLogin");
 const addProduct = require("../../controllers/admin/addProduct");
 const editProduct = require("../../controllers/admin/editProduct")
 const deleteProduct = require("../../controllers/admin/deleteProduct")
+const coupon = require("../../controllers/admin/coupon")
 const category = require("../../controllers/admin/category")
 const upload = multer({storage})
 const banner = require("../../controllers/admin/banner")
@@ -36,5 +37,16 @@ router.get("/addCategory",verifyAdmin.verifyAdmin1,category.getAddCategory)
 router.post("/addCategory",category.postAddCategory)
 router.get("/editCategory/:id",verifyAdmin.verifyAdmin1,category.getEditCategory)
 router.post("/editCategory/:id",category.postEditCategory)
+
+// -------------------------------- Coupon ---------------------------------------- //
+router.get("/coupon",coupon.getCoupon)
+
+router.get("/addCoupon",coupon.getAddCoupon)
+
+router.post("/addCoupon",coupon.postAddCoupon)
+
+
+
+
 
 module.exports = router;

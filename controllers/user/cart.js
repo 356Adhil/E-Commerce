@@ -2,6 +2,7 @@ const User = require("../../models/signUp");
 const cart = require("../../models/cart");
 const product = require("../../models/product");
 const category = require("../../models/category");
+const coupon = require("../../models/coupon");
 const order = require("../../models/order");
 const wishlist = require("../../models/wishList")
 const mongoose = require("mongoose");
@@ -354,6 +355,7 @@ module.exports = {
         const addressData = userData.addressDetails;
         res.render("user/checkout", {
           user,
+          userId,
           cartCount,
           addressData,
           totalPrice,
@@ -371,6 +373,8 @@ module.exports = {
 
   ProceedtoPay: async (req, res) => {
     try {
+      console.log("varunna vakuae"+req.body.coupon)
+      console.log("Ividethiiiiiiiiiiiiiii");
       const user = req.session.email;
       const userId = req.session.userId;
       let cartCount = 0;
@@ -379,6 +383,20 @@ module.exports = {
       if (Cart) {
         cartCount = Cart.products.length;
       }
+      const Coupon = await coupon.findOne({ couponName: req.body.coupon });
+if(req.body.coupon != ''){
+  if (Coupon) {
+  
+      await coupon.updateOne(
+          { couponName: req.body.coupon },
+          {
+              $push: {users: ObjectId(userId) },
+          },
+      ); 
+  }
+
+}
+     
       let userData = await User.findOne({ email: user });
 
       let getProducts = await cart.aggregate([
@@ -449,17 +467,35 @@ module.exports = {
               $sum: { $multiply: ["$quantity", "$productData.price"] },
             },
           },
-        },
-        { $project: { _id: 0, totalAmount: 1 } },
-      ]);
+        }, 
+      ])
 
       /* -----------Creating-Order-------------- */
       const paymentMethod = req.body["payment-method"];
       const orderItem = productData[0].products;
-      const totalAmount = totalPrice[0].totalAmount;
+      // const totalAmount = totalPrice[0].totalAmount;
       const orderStatus = paymentMethod == "COD" ? "placed" : "pending";
       const address = req.body.address;
+      
+                    let dis;
+                    let tamount;
 
+                    const sum = totalPrice[0].totalAmount
+                    tamount = sum;
+
+                      if(req.body.coupon != ''){
+                        if (coupon) {
+                          dis = (sum * (Coupon.discount / 100))
+                          if (dis > (Coupon.maxLimit)) {
+                              dis = (Coupon.maxLimit);
+                          }
+                          tamount = sum - dis;
+                      } else {
+                          tamount = sum;
+                      }
+  console.log(dis);
+                      }
+                 
       const createOrder = await order
         .create({
           user_Id: ObjectId(userId),
@@ -468,14 +504,15 @@ module.exports = {
           orderStatus: orderStatus,
           deliveryDate:moment().add(3,"days").format("MMM Do YY"),
           orderOn: moment().format("MMM Do YY"),
-          totalAmount: totalAmount,
+          totalAmount:parseInt(tamount),
           orderItem: orderItem,
+
           
         }).then((done)=>{
         
         // const totalAmount = await order.findOne({user_Id:userId},{_id:0,totalAmount:1})
         console.log("Total Amount......................................... : ");
-        console.log(totalAmount);
+      
 
           const oid = done._id
           if (paymentMethod === 'COD') {
@@ -499,7 +536,6 @@ module.exports = {
             })
           }
         })
-     
         
     } catch (error) {
       console.log(error.message);
@@ -773,7 +809,7 @@ confirmation: async (req,res)=>{
   const user = req.session.email
   const userId = req.session.userId
   const oid = req.params.oid;
-  
+
   let getProducts = await cart.aggregate([
     { $match: { user_Id: ObjectId(userId) } },
 
@@ -840,6 +876,8 @@ confirmation: async (req,res)=>{
   const orderItem = await order.findOne({_id: oid})
 
   res.render("user/confirmation",{user,cartCount,getProducts,orderItem,singleProductPrice})
+  await cart.deleteOne({user_Id:ObjectId(userId)})
+
   res.end()
 },
 

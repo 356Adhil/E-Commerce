@@ -5,6 +5,7 @@ const userLogin = require("../../controllers/user/userLogin");
 const cart = require("../../controllers/user/cart");
 const verifyUser = require("../../middlewares/Session");
 const verifyUserCart = require("../../middlewares/Session");
+const { Router } = require("express");
 
 router.get("/", userLogin.getLanding);
 router.get("/shop", userLogin.getShop);
@@ -50,5 +51,9 @@ router.post("/removeProduct",cart.postremoveProduct)
 router.post("/", userSignup.postSignup);
 router.post("/home", userLogin.postHome);
 router.post("/otp", userSignup.postOtp);
+
+router.post("/couponcheck", userSignup.couponCheck);
+
+
 
 module.exports = router;

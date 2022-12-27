@@ -2,6 +2,7 @@ const { response } = require("express");
 const admin = require("../../models/adminLogin");
 const User = require("../../models/signUp");
 const product = require("../../models/product");
+const order = require("../../models/order");
 
 module.exports = {
   getAdmin: (req, res) => {
@@ -38,10 +39,17 @@ module.exports = {
     res.render("admin/table", { users: userData });
   },
 
-  getHome: (req, res) => {
-    res.render("admin/home");
+  getHome:async (req, res) => {
+    try {
+     const productCount = await product.find().count()
+     const orderCount = await order.find().count()
+     const userCount = await User.find().count()
+      res.render("admin/home",{productCount,orderCount,userCount});
+    } catch (error) {
+      
+    }
   },
-
+  
   blockUser: async (req, res) => {
     console.log("Set");
     const id = req.params.id;
