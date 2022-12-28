@@ -107,12 +107,7 @@ module.exports = {
         cartCount = Cart.products.length;
       }
 
-      let orderDetails = await order.aggregate([
-        { $match: { user_Id: ObjectId(userId) } },
-        { $unwind: "$orderItem" },
-      ]);
-      console.log("heyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
-      console.log(orderDetails);
+      let orderDetails = await order.find({user_Id:ObjectId(userId)});
       res.render("user/orderDetails", { orderDetails, user, cartCount });
     } catch (error) {
       console.log(error);

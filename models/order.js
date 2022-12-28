@@ -7,6 +7,9 @@ const orderSchema = new schema({
     type: ObjectId,
     required: true,
   },
+  userName: {
+    type: String,
+  },
   paymentMethod: {
     type: String,
     required: true,

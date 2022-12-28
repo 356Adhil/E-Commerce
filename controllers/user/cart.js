@@ -373,8 +373,6 @@ module.exports = {
 
   ProceedtoPay: async (req, res) => {
     try {
-      console.log("varunna vakuae"+req.body.coupon)
-      console.log("Ividethiiiiiiiiiiiiiii");
       const user = req.session.email;
       const userId = req.session.userId;
       let cartCount = 0;
@@ -396,8 +394,7 @@ if(req.body.coupon != ''){
   }
 
 }
-     
-      let userData = await User.findOne({ email: user });
+let userData = await User.findOne({ email: user });
 
       let getProducts = await cart.aggregate([
         { $match: { user_Id: ObjectId(userId) } },
@@ -498,6 +495,7 @@ if(req.body.coupon != ''){
                  
       const createOrder = await order
         .create({
+          userName: userData.username,
           user_Id: ObjectId(userId),
           paymentMethod: paymentMethod,
           address: address,
