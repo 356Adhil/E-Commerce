@@ -10,6 +10,7 @@ function ajaxCart(ID){
             let count=$('#count').html()
             count=parseInt(count)+1;
             $('#count').html(count)
+            swal("Product added to Cart", { icon: "success" });
             
         }}
     })
@@ -26,6 +27,8 @@ function ajaxWishList(ID){
             let count=$('#count').html()
             count=parseInt(count)+1;
             $('#count').html(count)
+            swal("Product added to Wish List", { icon: "success" });
+
             
         }}
     })
@@ -42,7 +45,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 
 function changeQuantity(cartId,proId,singlePrice,totalPrice,count){
-    console.log("helloo bviyakk");
     let quantity=parseInt(document.getElementById('qty'+proId).value)
     $.ajax({
         url:'/changeQty',
@@ -55,7 +57,6 @@ function changeQuantity(cartId,proId,singlePrice,totalPrice,count){
         method:'post',
        success:(response)=>{
        if(response.statusRemove==true){
-        console.log("removed...............................................")
         location.reload();
         
        }else{
@@ -84,6 +85,7 @@ function changeQuantity(cartId,proId,singlePrice,totalPrice,count){
               method: "post",
               success: () => {
                 location.reload();
+                swal("Product Removed.", { icon: "success" });
               },
             });
           }

@@ -3,7 +3,7 @@ const app = express();
 const port = 3000;
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-
+const methodOverride = require('method-override')
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 require('dotenv').config()
@@ -39,6 +39,8 @@ app.use((req, res, next) => {
 });
 
 app.use(cookieParser());
+
+app.use(methodOverride('_method'))
 
 // set view engine
 app.set("view engine", "ejs");

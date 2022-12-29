@@ -14,6 +14,7 @@
 							  <th scope="col">Order Status</th>
 							  <th scope="col">Delivery Date</th>
 							  <th scope="col">Total Amount</th>
+							  <th scope="col">View</th>
 							  <th scope="col">Edit</th>
 							</tr>
 						  </thead>
@@ -29,7 +30,9 @@
 							  <td><%=orderDetails[i].orderStatus%></td>
 							  <td><%=orderDetails[i].deliveryDate%></td>
 							  <td><%=orderDetails[i].totalAmount%></td>
-							  <td><a href="" class="btn btn-success">Edit</a></td>
+							  <td><a href="orderDetail/<%=orderDetails[i]._id%>" class="btn btn-success" style="text-decoration: none; color:#fff;">View</a></td>
+							  <!-- <td><a href="" class="btn btn-success">Edit</a></td> -->
+							  <td><a href="editOrder/<%=orderDetails[i]._id%>" class="btn btn-success">Edit</a></td>
 							</tr>
                             <%}%>
 						  </tbody>
@@ -38,6 +41,57 @@
 			</main>
 		</div>
 	</div>
+
+  <!-- Modal -->
+  <!-- <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="staticBackdropLabel">Edit Order & Payment Status</h5>
+		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		</div>
+		<div class="modal-body">
+
+			<form action="/admin/order/<%=orderDetails._id%>?_method=PUT" method="post">
+				<label for="order_status">Order Status</label>
+				<select
+				  id="order_status"
+				  name="order_status"
+				  class="form-select"
+				  aria-label="Default select example"
+				>
+				  <option selected><%= orderDetails.orderStatus %></option>
+				  <option value="Pending">Pending</option>
+				  <option value="Shipped">Shipped</option>
+				  <option value="Delivered">Delivered</option>
+				  <option value="Cancelled">Cancelled</option>
+				</select>
+	  
+				<label for="payment_status">Payment Status</label>
+				<select
+				  id="payment_status"
+				  name="payment_status"
+				  class="form-select"
+				  aria-label="Default select example"
+				>
+				  <option selected><%= orderDetails.paymentStatus %></option>
+				  <option value="Paid">Paid</option>
+				  <option value="Not Paid">Not Paid</option>
+				  <option value="Refund">Refund</option>
+				</select>
+	  
+				<button type="submit" class="btn btn-dark mt-4">Update</button>
+			  </form>
+
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+		  <button type="button" class="btn btn-primary">Understood</button>
+		</div>
+	  </div>
+	</div>
+  </div> -->
+
 
 	<script src="../../admin/js/app.js"></script>
 

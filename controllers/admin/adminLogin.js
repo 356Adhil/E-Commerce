@@ -6,6 +6,9 @@ const order = require("../../models/order");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const moment = require("moment")
+const excelJs = require("exceljs");
+require("fs");
+const path = require("path");
 
 
 module.exports = {
@@ -105,6 +108,28 @@ module.exports = {
     }
   },
 
+  getUpdateOrder:async (req,res)=>{
+    try {
+      const orderId = req.params.id
+      let orderDetails = await order.findOne({_id: orderId})
+      res.render("admin/editOrder",{orderDetails})
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  updateOrder:async (req,res)=>{
+    const orderId = req.params.id
+    console.log(orderId);
+    await order.findByIdAndUpdate(orderId,{
+      paymentStatus: req.body.payment_status,
+      orderStatus: req.body.order_status,
+    },
+    { new: true, runValidators: true}
+    );
+    res.redirect("/admin/order")
+  },
+
   getOrderDetail: async (req,res)=>{
     try {
       const id = req.params.id
@@ -180,5 +205,43 @@ module.exports = {
     } catch (error) {
       console.log(error);
     }
+  },
+
+  downloadSales: async (req,res)=>{
+    try {
+      let date = req.body;
+      let orderData = await order.find({
+        orderStatus: "Delivered",
+        createdAt: { $gte: date.from, $lte: date.to },
+      });
+
+      const workbook = new excelJs.Workbook();
+        const worksheet = workbook.addWorksheet("My Sheet");
+
+        worksheet.columns = [
+          { header: "Customer", key: "Customer", width: 15 },
+          { header: "Payment Status", key: "PaymentStatus", width: 15 },
+          { header: "Order Status", key: "OrderStatus", width: 15 },
+          { header: "Amount", key: "Amount", width: 15 },
+        ];
+
+        orderData.forEach((orderData) => {
+          worksheet.addRow({
+            Customer: orderData.userName,
+            PaymentStatus: orderData.paymentStatus,
+            OrderStatus: orderData.orderStatus,
+            Amount: orderData.totalAmount,
+          });
+        });
+        await workbook.xlsx.writeFile("order.xlsx").then((data) => {
+          const location = path.join(__dirname + "../../../order.xlsx");
+          res.download(location);
+        });
+
+
+    } catch (error) {
+      console.log(error);
+    }
   }
+
 };
