@@ -28,7 +28,7 @@ module.exports = {
       next();
     }
     else{
-      res.redirect("/admin")
+      res.redirect("/admin/home")
     }
   }
 };

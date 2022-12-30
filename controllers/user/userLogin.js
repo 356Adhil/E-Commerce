@@ -115,9 +115,9 @@ module.exports = {
     }
   },
 
-  getContact: (req, res) => {
-    res.render("user/contact");
-  },
+  // getContact: (req, res) => {
+  //   res.render("user/contact");
+  // },
 
   getProductDetails: async(req, res) => {
     try {

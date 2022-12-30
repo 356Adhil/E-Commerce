@@ -9,31 +9,28 @@ const moment = require("moment")
 const excelJs = require("exceljs");
 require("fs");
 const path = require("path");
+const session = require("express-session");
+require("dotenv").config();
 
 
 module.exports = {
   getAdmin: (req, res) => {
     if (req.session.adminEmail) {
       res.redirect("/admin/home");
-    }
+    }else{
     res.render("admin/login");
+  }
   },
 
   postAdmin: async (req, res) => {
     try {
       let adminData = req.body;
-      const findAdmin = await admin.find({
-        email: adminData.email,
-        password: adminData.password,
-      });
-      if (findAdmin) {
-        const adminId = await admin.findOne({ email: adminData.email });
+      if (process.env.ADMIN_PASS === adminData.password && process.env.ADMIN_MAIL === adminData.email) {
         req.session.adminLoggedIn = true;
-        req.session.adminId = adminId._id;
         req.session.adminEmail = req.body.email;
         res.redirect("/admin/home");
       } else {
-        res.redirect("/admin/login");
+        res.redirect("/admin");
         console.log("Something Wrong");
       }
     } catch (error) {
@@ -47,19 +44,23 @@ module.exports = {
   },
 
   getHome: async (req, res) => {
-    try {
-      const productCount = await product.find().count();
-      const orderCount = await order.find().count();
-      const userCount = await User.find().count();
-      const orderData = await order.find()
-      
-      const totalAmount = orderData.reduce((accumulator, object) => {
-        return (accumulator += object.totalAmount);
-    }, 0);
-
-      res.render("admin/home", { productCount, orderCount, userCount, totalAmount });
-    } catch (error) {
-      console.log(error);
+    if(req.session.adminEmail){
+      try {
+        const productCount = await product.find().count();
+        const orderCount = await order.find().count();
+        const userCount = await User.find().count();
+        const orderData = await order.find()
+        
+        const totalAmount = orderData.reduce((accumulator, object) => {
+          return (accumulator += object.totalAmount);
+      }, 0);
+  
+        res.render("admin/home", { productCount, orderCount, userCount, totalAmount });
+      } catch (error) {
+        console.log(error);
+      }
+    }else{
+      res.redirect("/admin")
     }
   },
 

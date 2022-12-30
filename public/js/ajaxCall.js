@@ -23,10 +23,6 @@ function ajaxWishList(ID){
         success:(response)=>{
             if(response.status=true){
             console.log(response.status)
-           
-            let count=$('#count').html()
-            count=parseInt(count)+1;
-            $('#count').html(count)
             swal("Product added to Wish List", { icon: "success" });
 
             
@@ -77,16 +73,33 @@ function changeQuantity(cartId,proId,singlePrice,totalPrice,count){
 
         function removeProduct(cartId, productId) {
             $.ajax({
-              url: "/removeProduct",
-              data: {
-                cart: cartId,
-                product: productId,
-              },
-              method: "post",
-              success: () => {
-                location.reload();
-                swal("Product Removed.", { icon: "success" });
+                url: "/removeProduct",
+                data: {
+                    cart: cartId,
+                    product: productId,
+                },
+                method: "post",
+                success: () => {
+                    location.reload();
+                    swal("Product Removed.", { icon: "success" });
               },
             });
           }
+
+
+        function removeWishProduct(wishId, productId) {
+            $.ajax({
+                url: "/removeWishProduct",
+                data: {
+                    wishlist: wishId,
+                    product: productId,
+                },
+                method: "post",
+                success: () => {
+                    location.reload();
+                    swal("Product Removed.", { icon: "success" });
+              },
+            });
+          }
+
 

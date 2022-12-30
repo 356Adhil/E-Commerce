@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const { storage } = require("../../middlewares/multer");
-
 const adminLogin = require("../../controllers/admin/adminLogin");
 const addProduct = require("../../controllers/admin/addProduct");
 const editProduct = require("../../controllers/admin/editProduct");
@@ -17,7 +16,7 @@ router.get("/", adminLogin.getAdmin);
 
 router.post("/", adminLogin.postAdmin);
 
-router.get("/home", verifyAdmin.verifyAdmin1, adminLogin.getHome);
+router.get("/home", adminLogin.getHome);
 
 router.get("/userDetails", verifyAdmin.verifyAdmin1, adminLogin.getTable);
 
@@ -73,9 +72,9 @@ router.get(
 router.post("/editCategory/:id", category.postEditCategory);
 
 // -------------------------------- Coupon ---------------------------------------- //
-router.get("/coupon", coupon.getCoupon);
+router.get("/coupon", verifyAdmin.verifyAdmin1, coupon.getCoupon);
 
-router.get("/addCoupon", coupon.getAddCoupon);
+router.get("/addCoupon", verifyAdmin.verifyAdmin1, coupon.getAddCoupon);
 
 router.post("/addCoupon", coupon.postAddCoupon);
 
@@ -90,11 +89,15 @@ router.get(
 
 router.post("/order/:id", adminLogin.updateOrder);
 
-router.get("/orderDetail/:id", adminLogin.getOrderDetail);
+router.get(
+  "/orderDetail/:id",
+  verifyAdmin.verifyAdmin1,
+  adminLogin.getOrderDetail
+);
 
 // ---------------------------- Sales Report ---------------------------- //
 router.get("/salesReport", verifyAdmin.verifyAdmin1, adminLogin.getSales);
 
-router.post("/download",adminLogin.downloadSales)
+router.post("/download", adminLogin.downloadSales);
 
 module.exports = router;

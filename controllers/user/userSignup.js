@@ -114,9 +114,45 @@ module.exports = {
     }
   },
 
-  getOrderProductDetails: (req, res) => {
+  getOrderProductDetails:async (req, res) => {
     try {
-      res.render("user/orderProductDetails");
+      const user = req.session.email
+      const id = req.params.id
+      let cartCount = 0;
+      let Cart = await cart.findOne({ user_Id: ObjectId(req.session.userId) });
+      console.log("Cart Exist");
+      if (Cart) {
+        cartCount = Cart.products.length;
+      }
+      console.log(id);
+      let orderDetails = await order.aggregate([
+        { $match: { _id:ObjectId(id) } },
+        { $unwind: "$orderItem" },
+        {
+          $project: {
+            products: "$orderItem.product_Id",
+            quantity: "$orderItem.quantity",
+          },
+        },
+        {
+          $lookup: {
+            from: "products",
+            localField: "products",
+            foreignField: "_id",
+            as: "productData",
+          },
+        },
+        {
+          $project: {
+            products: 1,
+            quantity: 1,
+            productData: { $arrayElemAt: ["$productData", 0] },
+          },
+        },
+      ])
+      console.log("ithhanu order details....");
+      console.log(orderDetails);
+      res.render("user/orderProductDetails",{orderDetails});
     } catch (error) {
       console.log(error);
     }

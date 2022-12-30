@@ -2,53 +2,56 @@ const mongoose = require("mongoose");
 const schema = mongoose.Schema;
 const ObjectId = schema.ObjectId;
 
-const orderSchema = new schema({
-  user_Id: {
-    type: ObjectId,
-    required: true,
-  },
-  userName: {
-    type: String,
-  },
-  paymentMethod: {
-    type: String,
-    required: true,
-  },
-  address: {
-    type: String,
-    required: true,
-  },
-  orderItem: [
-    {
-      product_Id: {
-        type: ObjectId,
-      },
-      quantity: {
-        type: Number,
-      },
+const orderSchema = new schema(
+  {
+    user_Id: {
+      type: ObjectId,
+      required: true,
     },
-  ],
-  totalAmount: {
-    type: Number,
-  },
-  orderStatus: {
-    type: String,
-    default: "pending",
-  },
+    userName: {
+      type: String,
+    },
+    paymentMethod: {
+      type: String,
+      required: true,
+    },
+    address: {
+      type: String,
+      required: true,
+    },
+    orderItem: [
+      {
+        product_Id: {
+          type: ObjectId,
+        },
+        quantity: {
+          type: Number,
+        },
+      },
+    ],
+    totalAmount: {
+      type: Number,
+    },
+    orderStatus: {
+      type: String,
+      default: "pending",
+    },
 
-  paymentStatus: {
-    type: String,
-    default: "not paid",
+    paymentStatus: {
+      type: String,
+      default: "not paid",
+    },
+    deliveryDate: {
+      type: String,
+    },
+    orderOn: {
+      type: String,
+    },
+    deliveryDate: {
+      type: String,
+    },
   },
-  deliveryDate: {
-    type:String,
-  },
-  orderOn: {
-    type: String,
-  },
-  deliveryDate: {
-    type: String,
-  },
-});
+  { timestamps: true }
+);
 const order = mongoose.model("order", orderSchema);
 module.exports = order;

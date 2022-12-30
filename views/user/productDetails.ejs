@@ -43,12 +43,10 @@
 						<% if (user) { %>
 							<div class="card_area d-flex align-items-center">
 								<a onclick="ajaxCart('<%= product.id %>')" class="primary-btn " style="color: white;" >Add to Cart</a>
-								<a class="icon_btn" href="#"><i class="lnr lnr lnr-heart"></i></a>
 							</div>
 							<% } else {%>
 								<div class="card_area d-flex align-items-center">
 									<a href="/login" class="primary-btn " style="color: white;" >Add to Cart</a>
-									<a class="icon_btn" href="#"><i class="lnr lnr lnr-heart"></i></a>
 								</div>
 						<%}%>
 					</div>

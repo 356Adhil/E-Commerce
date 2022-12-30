@@ -690,7 +690,7 @@ let userData = await User.findOne({ email: user });
           cartCount,
         });
       } else {
-        res.render("user/emptyCart", { user, cartCount });
+        res.render("user/emptyWishlist", { user, cartCount });
       }
     } catch (error) {
       console.log(error);
@@ -884,17 +884,23 @@ postremoveProduct: async (req, res) => {
   const cartId=req.body.cart
   const productId=req.body.product;
 
-  console.log("sankeerthan");
-  console.log(cartId);
-  console.log(productId);
-
-
   let removeCart=await cart.updateOne({_id:ObjectId(cartId)},
   {$pull:{products:{product_Id:productId}}} 
 )
 .then(()=>{
   res.json({status:true});
 })
+},
+
+removeWishProduct: async (req,res)=>{
+  const wishId = req.body.wishlist
+  const productId = req.body.product;
+
+  let removeWish = await wishlist.updateOne({_id:ObjectId(wishId)},
+  {$pull:{products:{product_Id:productId}}})
+  .then(()=>{
+    res.json({status:true})
+  })
 },
 
 
