@@ -1,4 +1,6 @@
 <%- include("../includes/adminheader.ejs") %>
+<div class="container mt-5">
+  <div class="container mt-2">
 <form action="/admin/order/<%=orderDetails._id%>" method="post">
     <label for="order_status">Order Status</label>
     <select
@@ -29,6 +31,8 @@
 
     <button type="submit" class="btn btn-dark mt-4">Update</button>
   </form>
+</div>
+</div>
 
   <script src="../../admin/js/app.js"></script>
 

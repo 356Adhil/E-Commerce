@@ -201,7 +201,7 @@ module.exports = {
             },
         },
     ]);
-      let orderDetails = await order.find()
+      let orderDetails = await order.find({orderStatus: "Delivered"})
       res.render("admin/salesReport",{orderDetails,  month: monthReport});
     } catch (error) {
       console.log(error);
