@@ -6,19 +6,15 @@ const bodyParser = require("body-parser");
 const methodOverride = require('method-override')
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
+const db = require("./config/connection");
 require('dotenv').config()
-// const expressLayouts = require("express-ejs-layouts");
-// const path = require("path");
 
 // setting Routers
 const userRouter = require("./routes/user/user");
 const adminRouter = require("./routes/admin/admin");
 
 // Connection to dataBase
-mongoose.connect("mongodb://localhost:27017/E-Commerce", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+db.dbConnect();
 
 const oneDay = 1000 * 60 * 60 * 24;
 app.use(
@@ -46,9 +42,6 @@ app.use(methodOverride('_method'))
 app.set("view engine", "ejs");
 app.set("views", "./views");
 
-// app.use(expressLayouts);
-// app.set("layout", "./layouts/layout");
-
 app.use(
   bodyParser.urlencoded({
     extended: true,
@@ -58,7 +51,6 @@ app.use(
 app.use(bodyParser.json());
 
 app.use(express.static("public"));
-// app.use("css", express.static(path.join(__dirname + "public/css")));
 
 // Routers
 app.use("/", userRouter);
