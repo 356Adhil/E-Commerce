@@ -17,7 +17,7 @@ module.exports = {
     } else {
       const productData = await product.find();
       const bannerData = await banner.find();
-      res.render("user/LandingIndex",{ product: productData, banner: bannerData });
+      res.render("user/landingIndex",{ product: productData, banner: bannerData });
     }
   },
 
