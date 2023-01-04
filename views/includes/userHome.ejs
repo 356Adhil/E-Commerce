@@ -79,31 +79,26 @@
                             <!-- <li class="nav-item">
                                 <a class="nav-link" href="/contact">Contact</a>
                             </li> -->
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
+                        <!-- </ul>
+                        <ul class="nav navbar-nav navbar-right"> -->
                             <li class="nav-item">
                                 <% if (user) { %>
-                                <a href="/cart" class="cart"><span>Cart</span>
+                                <a href="/cart" class="cart nav-link"><span>Cart</span>
                                     <span class="badge badge-light " id="count"><%= cartCount %></span></a>
                                     <% } else {%>
-                                        <a href="/login" class="cart"><span>Cart</span>
+                                        <a href="/login" class="cart nav-link"><span>Cart</span>
                                             <span class="badge badge-light " id="count">0</span>
                                             <%}%>
                                 </a>
                             </li>
                             
                             <li class="nav-item">
-                                <button class="search">
-                                    <a href="/wishlist" class="Wishlist
-                                    ">
+                                    <a href="/wishlist" class="Wishlist nav-link">
                                         <span style="width: 20px;" class="lnr lnr-heart"></span></a>
-                                </button>
                             </li>
                             <li class="nav-item">
-                                <button class="search">
-                                    <a href="/profile" class="profile">
+                                    <a href="/profile" class="profile nav-link">
                                         <span><img style="width: 20px;" src="img/user-128.png" alt=""></span></a>
-                                </button>
                             </li>
                         </ul>
                     </div>
