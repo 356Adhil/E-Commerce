@@ -74,26 +74,27 @@
                             <!-- <li class="nav-item">
                                 <a class="nav-link" href="/contact">Contact</a>
                             </li> -->
-                        </ul>
-                        <ul class="nav navbar-nav navbar-right">
+                        <!-- </ul>
+                        <ul class="nav navbar-nav navbar-right"> -->
                             <li class="nav-item">
                                 <% if (user) { %>
-                                <a href="/cart" class="cart"><span class="ti-bag"></span>
+                                <a href="/cart" class="cart nav-link"><span class="ti-bag"></span>
                                     <span class="badge badge-light " id="count"><%= cartCount %></span>
                                     <% } else {%>
-                                        <a href="/login" class="cart"><span class="ti-bag"></span>
+                                        <a href="/login" class="cart nav-link"><span class="ti-bag"></span>
                                             <span class="badge badge-light " id="count"><%= cartCount %></span>
                                             <%}%>
                                 </a>
                             </li>
                             
                             <li class="nav-item">
-                                <button class="search">
-                                    <a href="/wishlist" class="Wishlist
-                                    ">
-                                        <span class="lnr lnr-heart"></span></a>
-                                </button>
+                                    <a href="/wishlist" class="Wishlist nav-link">
+                                    <span class="lnr lnr-heart"></span></a> 
                             </li>
+                            <li class="nav-item">
+                                <a href="/profile" class="profile nav-link">
+                                    <span><img style="width: 20px;" src="img/user-128.png" alt=""></span></a>
+                        </li>
                         </ul>
                     </div>
                 </div>
