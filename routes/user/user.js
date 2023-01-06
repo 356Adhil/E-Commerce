@@ -17,6 +17,12 @@ router.get("/login", userLogin.getLogin);
 
 // router.get("/contact", userLogin.getContact);
 
+router.get("/profileDetails",userSignup.profileDetails)
+
+router.get("/editAccount",userSignup.getEditAccount)
+
+router.post('/postEditAccount',userSignup.postEditAccount);
+
 router.get("/home", userLogin.getHome);
 
 router.get("/otp", userSignup.getOtp);

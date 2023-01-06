@@ -275,4 +275,62 @@ module.exports = {
       res.json([{ success: false, message: "Coupon invalid" }]);
     }
   },
+
+  profileDetails: async (req,res)=>{
+    try {
+      
+      let cartCount = 0;
+      let Cart = await cart.findOne({ user_Id: ObjectId(req.session.userId) });
+      console.log("Cart Exist");
+      if (Cart) {
+        cartCount = Cart.products.length;
+      }
+      const user = req.session.email
+      const userData = await User.findOne({email:user});
+      const addressData = userData.addressDetails;
+      console.log(userData);
+      res.render("user/profileDetails",{user,userData,cartCount,addressData})
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  getEditAccount: async(req,res)=>{
+    try {
+      let cartCount = 0;
+      let Cart = await cart.findOne({ user_Id: ObjectId(req.session.userId) });
+      console.log("Cart Exist");
+      if (Cart) {
+        cartCount = Cart.products.length;
+      }
+      const user = req.session.email
+      const userData = await User.findOne({email:user});
+      res.render("user/editAccount",{user,userData,cartCount})
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  postEditAccount : async(req,res)=>{
+    if(req.session.email){
+        try {
+            const user = req.session.email;
+            const data = req.body;
+    const update = await User.updateOne({
+                email:user
+            },
+            {
+                $set:{
+                    username:data.fullname,
+                    mobile:data.phonenumber,
+                }
+            }) 
+            res.redirect('/profileDetails')
+        } catch (error) {
+          console.log(error);
+        }
+    }else{
+        res.redirect('/userLogin');
+    }
+},
 };

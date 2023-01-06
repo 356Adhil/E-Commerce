@@ -1,0 +1,70 @@
+<%-include('../includes/userHome')%>
+<section class="mt-5" style="display: flex; justify-content: center;align-items: center; height: 100vh; ">
+<!-- <div class="breadcrumb-section breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2 text-center">
+                <div class="breadcrumb-text">
+                    <p>Fresh and Organic</p>
+                    <h1>User Profile</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+<!-- end breadcrumb section -->
+
+<!-- check out section -->
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="row" style="margin-top: 50px;">
+        <div class="col-md-3 border-right">
+            <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+                <img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
+                <span class="font-weight-bold"><%=userData.username%></span>
+                <span class="text-black-50"><%=userData.email%></span>
+                <span> </span>
+            </div>
+            <!-- <div class="list-box d-flex justify-content-start align-items-center">
+                <div class="list-icon">
+                    <i class="fas fa-sync"></i>
+                </div>
+                <div class="content">
+                    <h3>Wallet Balance</h3>
+                    <p></p>
+                </div>
+            </div> -->
+        </div>
+        <div class="col-md-5 border-right">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Profile</h4>
+                </div>
+                <div class="row mt-2">
+                    
+                <div class="row mt-3">
+                    <div class="col-md-12"><label class="labels">Name</label><input type="text" class="form-control" placeholder="first name" value="<%=userData.username%>" readonly></div>
+                    <div class="col-md-12"><label class="labels">Mobile Number</label><input type="text" class="form-control" placeholder="enter phone number" value="<%=userData.mobile%>" readonly></div>
+                    <div class="col-md-12"><label class="labels">Email ID</label><input type="text" class="form-control" placeholder="enter email id" value="<%=userData.email%>"readonly></div>
+                    
+                </div>
+                <div class="mt-5 text-center"><a href="/editAccount"><button class="btn btn-primary profile-button" type="button">Edit Profile</button></a></div>
+                <!-- <div class="mt-5 text-center"><a href="/savedAddress"><button class="btn btn-primary profile-button" type="button">Saved Addresses</button></a></div> -->
+                <div class="d-flex justify-content-between align-items-center mb-3 mt-4">
+                    <h4 class="text-right">Address</h4>
+                </div>
+
+                <%for(let i=0;i<addressData.length  ;i++){ %>
+                                <div class="card" style="width: 18rem;">
+                                    <div class="card-body">
+                                      <p class="card-text"><%= addressData[i].address %>, <%= addressData[i].pinCode %> <%= addressData[i].city %></p>
+                                    </div>
+                                </div>
+                                <%}%>
+                                
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- end check out section -->
+</section>
